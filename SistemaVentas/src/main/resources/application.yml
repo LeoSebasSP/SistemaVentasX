@@ -1,0 +1,56 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: SystemVentasX
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/VentasX
+    username: postgres
+    password: postgres
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+    defer-datasource-initialization: true
+  messages:
+    encoding: UTF-8 #Para las tildes en los mensajes de validacion
+
+servlet:
+  servlet:
+    encoding:
+      charset: UTF-8
+
+logging:
+  level:
+    springfox: DEBUG
+
+application:
+  security:
+    jwt:
+      secret-key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+      expiration: 86400000 # a day
+      refresh-token:
+        expiration: 604800000 # 7 days
+
+
+#enable or disable apidocs - swagger-ui
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+
+#define url swagger-ui => http://localhost:8080/swagger-ui/index.html#/
+
+#select packages, classes to scan
+#springdoc.packagesToScan=com.paquete1
+#springdoc.pathsToMatch=/test/**, /support/**, /xyz/**
+
+#https://springdoc.org/
