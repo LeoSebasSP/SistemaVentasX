@@ -86,7 +86,7 @@ public class SistemaVentasApplication {
 					.id(1)
 					.name("Producto")
 					.icon("pi-box")
-					.url("/pages/product")
+					.url("/pages/products")
 					.menu(maintenanceMenuCreated)
 					.build();
 			SubMenu productMenuCreated = iSubMenuService.create(productSubmenu);
@@ -97,7 +97,7 @@ public class SistemaVentasApplication {
 					.id(2)
 					.name("Unidad Medida")
 					.icon("pi-filter")
-					.url("/pages/measure-unit")
+					.url("/pages/measure-units")
 					.menu(maintenanceMenuCreated)
 					.build();
 			SubMenu measureUnitMenuCreated = iSubMenuService.create(measureUnitSubmenu);

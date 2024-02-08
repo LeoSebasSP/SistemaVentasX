@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -69,12 +70,17 @@ public class AuthenticationService {
         tokenRepository.saveAll(validUserTokens);
     }
 
-    public List<String> findAllValidTokenByUser(String username){
+    public Boolean findAllValidTokenByUser(String username, String tokenSessionStorage){
         User user = repository.findByUsername(username).orElse(null);
         if (user == null) {
             return null;
         }
-        return tokenRepository.findAllValidTokenByUser(user.getId()).stream().map(Token::getToken).toList();
+        List<Token> token = tokenRepository.findAllValidTokenByUser(user.getId());
+        boolean invalidTokenSS = false;
+        if (token != null && !token.isEmpty()){
+            invalidTokenSS = Objects.equals(token.get(0).getToken(), tokenSessionStorage);
+        }
+        return invalidTokenSS;
     }
 
     public void refreshToken(

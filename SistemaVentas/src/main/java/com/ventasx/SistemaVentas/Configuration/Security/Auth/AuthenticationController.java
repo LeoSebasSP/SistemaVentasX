@@ -31,8 +31,8 @@ public class AuthenticationController {
         authenticationService.refreshToken(request, response);
     }
 
-    @PostMapping("/get-tokens-user/{username}")
-    public ResponseEntity<List<String>> findAllValidTokenByUser(@PathVariable("username") String username){
-        return new ResponseEntity<>(authenticationService.findAllValidTokenByUser(username), HttpStatus.OK);
+    @PostMapping("/get-tokens-user/{username}&{tokenSessionStorage}")
+    public ResponseEntity<Boolean> findAllValidTokenByUser(@PathVariable("username") String username, @PathVariable("tokenSessionStorage") String tokenSessionStorage){
+        return new ResponseEntity<>(authenticationService.findAllValidTokenByUser(username, tokenSessionStorage), HttpStatus.OK);
     }
 }
