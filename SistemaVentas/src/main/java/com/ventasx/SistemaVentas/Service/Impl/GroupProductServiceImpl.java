@@ -7,6 +7,8 @@ import com.ventasx.SistemaVentas.Service.IGroupProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class GroupProductServiceImpl extends CrudServiceImpl<GroupProduct, Long> implements IGroupProductService {
@@ -16,5 +18,10 @@ public class GroupProductServiceImpl extends CrudServiceImpl<GroupProduct, Long>
     @Override
     protected IGenericRepository<GroupProduct, Long> getRepo() {
         return repository;
+    }
+
+    @Override
+    public List<GroupProduct> findAllByIsEnabledTrue() {
+        return repository.findAllByIsEnabledTrue();
     }
 }

@@ -1,5 +1,6 @@
 package com.ventasx.SistemaVentas;
 
+import com.ventasx.SistemaVentas.Configuration.Security.Auth.AuthenticationRequest;
 import com.ventasx.SistemaVentas.Configuration.Security.Auth.AuthenticationService;
 import com.ventasx.SistemaVentas.Persistence.Entity.*;
 import com.ventasx.SistemaVentas.Service.*;
@@ -132,6 +133,7 @@ public class SistemaVentasApplication {
 					.isEnabled(true)
 					.build();
 			iBrandProductService.create(genericBrandProduct);
+			System.out.println("Marca Genérico creada.");
 
 			GroupProduct genericGroupProduct = GroupProduct.builder()
 					.id(1L)
@@ -142,6 +144,7 @@ public class SistemaVentasApplication {
 					.isEnabled(true)
 					.build();
 			iGroupProductService.create(genericGroupProduct);
+			System.out.println("Grupo Genérico creada.");
 
 			CategoryProduct genericCategoryProduct = CategoryProduct.builder()
 					.id(1L)
@@ -153,6 +156,7 @@ public class SistemaVentasApplication {
 					.isEnabled(true)
 					.build();
 			iCategoryProductService.create(genericCategoryProduct);
+			System.out.println("Categoria Genérico creada.");
 
 			TypeProduct genericTypeProduct = TypeProduct.builder()
 					.id(1L)
@@ -164,15 +168,18 @@ public class SistemaVentasApplication {
 					.isEnabled(true)
 					.build();
 			iTypeProductService.create(genericTypeProduct);
+			System.out.println("Tipo Genérico creada.");
 
 			MeasureUnit unMeasureUnit = MeasureUnit.builder()
-					.Id(1)
+					.id(1)
 					.name("UN")
 					.description("Unidad")
 					.userCreatorId(1L)
 					.creationDate(LocalDateTime.now())
+					.isEnabled(true)
 					.build();
 			iMeasureUnitService.create(unMeasureUnit);
+			System.out.println("Unidad de Medida UN creada.");
 
 			Product testProduct = Product.builder()
 					.id(1L)
@@ -191,8 +198,153 @@ public class SistemaVentasApplication {
 					.sellingPriceSoles(20.4F)
 					.sunatType("BIEN")
 					.build();
-
 			iProductService.create(testProduct);
+			System.out.println("Producto PRUEBA creada.");
+
+//-------------------------------------para probar el cascade select----------------------------------------------------------------
+			GroupProduct group1 = GroupProduct.builder()
+					.id(2L)
+					.name("Grupo1")
+					.description("Grupo1")
+					.creationDate(LocalDateTime.now())
+					.userCreatorId(1L)
+					.isEnabled(true)
+					.build();
+			iGroupProductService.create(group1);
+			System.out.println("Grupo1 creada.");
+
+			GroupProduct group2 = GroupProduct.builder()
+					.id(3L)
+					.name("Grupo2")
+					.description("Grupo2")
+					.creationDate(LocalDateTime.now())
+					.userCreatorId(1L)
+					.isEnabled(true)
+					.build();
+			iGroupProductService.create(group2);
+			System.out.println("Grupo2 creada.");
+
+			CategoryProduct category1 = CategoryProduct.builder()
+					.id(2L)
+					.name("Categoria 1")
+					.description("Categoria 1")
+					.groupProduct(group1)
+					.creationDate(LocalDateTime.now())
+					.userCreatorId(1L)
+					.isEnabled(true)
+					.build();
+			iCategoryProductService.create(category1);
+			System.out.println("Categoria 1 creada.");
+
+			CategoryProduct category2 = CategoryProduct.builder()
+					.id(3L)
+					.name("Categoria 2")
+					.description("Categoria 2")
+					.groupProduct(group1)
+					.creationDate(LocalDateTime.now())
+					.userCreatorId(1L)
+					.isEnabled(true)
+					.build();
+			iCategoryProductService.create(category2);
+			System.out.println("Categoria 2 creada.");
+
+			CategoryProduct category3 = CategoryProduct.builder()
+					.id(4L)
+					.name("Categoria 3")
+					.description("Categoria 3")
+					.groupProduct(group2)
+					.creationDate(LocalDateTime.now())
+					.userCreatorId(1L)
+					.isEnabled(true)
+					.build();
+			iCategoryProductService.create(category3);
+			System.out.println("Categoria 3 creada.");
+
+			CategoryProduct category4 = CategoryProduct.builder()
+					.id(5L)
+					.name("Categoria 4")
+					.description("Categoria 4")
+					.groupProduct(group2)
+					.creationDate(LocalDateTime.now())
+					.userCreatorId(1L)
+					.isEnabled(true)
+					.build();
+			iCategoryProductService.create(category4);
+			System.out.println("Categoria 4 creada.");
+
+			TypeProduct type1 = TypeProduct.builder()
+					.id(2L)
+					.name("Tipo1")
+					.description("Tipo1")
+					.categoryProduct(category1)
+					.creationDate(LocalDateTime.now())
+					.userCreatorId(1L)
+					.isEnabled(true)
+					.build();
+			iTypeProductService.create(type1);
+			System.out.println("Tipo 1 creada.");
+
+			TypeProduct type2 = TypeProduct.builder()
+					.id(3L)
+					.name("Tipo2")
+					.description("Tipo2")
+					.categoryProduct(category3)
+					.creationDate(LocalDateTime.now())
+					.userCreatorId(1L)
+					.isEnabled(true)
+					.build();
+			iTypeProductService.create(type2);
+			System.out.println("Tipo 2 creada.");
+
+			TypeProduct type3 = TypeProduct.builder()
+					.id(4L)
+					.name("Tipo3")
+					.description("Tipo3")
+					.categoryProduct(category2)
+					.creationDate(LocalDateTime.now())
+					.userCreatorId(1L)
+					.isEnabled(true)
+					.build();
+			iTypeProductService.create(type3);
+			System.out.println("Tipo 3 creada.");
+
+			TypeProduct type4 = TypeProduct.builder()
+					.id(5L)
+					.name("Tipo4")
+					.description("Tipo4")
+					.categoryProduct(category4)
+					.creationDate(LocalDateTime.now())
+					.userCreatorId(1L)
+					.isEnabled(true)
+					.build();
+			iTypeProductService.create(type4);
+			System.out.println("Tipo 4 creada.");
+
+			TypeProduct type5 = TypeProduct.builder()
+					.id(6L)
+					.name("Tipo5")
+					.description("Tipo5")
+					.categoryProduct(category1)
+					.creationDate(LocalDateTime.now())
+					.userCreatorId(1L)
+					.isEnabled(true)
+					.build();
+			iTypeProductService.create(type5);
+			System.out.println("Tipo 5 creada.");
+
+			TypeProduct type6 = TypeProduct.builder()
+					.id(7L)
+					.name("Tipo6")
+					.description("Tipo6")
+					.categoryProduct(category1)
+					.creationDate(LocalDateTime.now())
+					.userCreatorId(1L)
+					.isEnabled(true)
+					.build();
+			iTypeProductService.create(type6);
+			System.out.println("Tipo 6 creada.");
+//-------------------------------------para probar el cascade select----------------------------------------------------------------
+
 		};
 	}
 }

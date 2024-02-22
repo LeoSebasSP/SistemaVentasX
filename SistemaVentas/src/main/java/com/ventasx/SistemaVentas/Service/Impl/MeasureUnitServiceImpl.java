@@ -7,6 +7,8 @@ import com.ventasx.SistemaVentas.Service.IMeasureUnitService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class MeasureUnitServiceImpl extends CrudServiceImpl<MeasureUnit, Integer> implements IMeasureUnitService {
@@ -16,5 +18,10 @@ public class MeasureUnitServiceImpl extends CrudServiceImpl<MeasureUnit, Integer
     @Override
     protected IGenericRepository<MeasureUnit, Integer> getRepo() {
         return repository;
+    }
+
+    @Override
+    public List<MeasureUnit> findAllByIsEnabledTrue() {
+        return repository.findAllByIsEnabledTrue();
     }
 }

@@ -1,9 +1,12 @@
 package com.ventasx.SistemaVentas.Controller;
 
+import com.ventasx.SistemaVentas.Controller.Dto.CategoryProductDto;
 import com.ventasx.SistemaVentas.Controller.Dto.TypeProductDto;
 import com.ventasx.SistemaVentas.Controller.Mapper.MapperBetweenDtoAndEntity;
+import com.ventasx.SistemaVentas.Persistence.Entity.CategoryProduct;
 import com.ventasx.SistemaVentas.Persistence.Entity.TypeProduct;
 import com.ventasx.SistemaVentas.Service.ITypeProductService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,7 +43,13 @@ public class TypeProductController extends MapperBetweenDtoAndEntity<TypeProduct
 
     @GetMapping
     public ResponseEntity<List<TypeProductDto>> listAllData() throws Exception{
-        List<TypeProductDto> listDataDto =  service.getAll().stream().map(this::mapFromEntityToDto).toList();
+        List<TypeProductDto> listDataDto =  service.findAllByIsEnabledTrue().stream().map(this::mapFromEntityToDto).toList();
+        return new ResponseEntity<>(listDataDto, HttpStatus.OK);
+    }
+
+    @PostMapping("/by-group-product")
+    public ResponseEntity<List<TypeProductDto>> listAllDataByGroupProduct(@RequestBody @Valid CategoryProductDto dto) throws Exception{
+        List<TypeProductDto> listDataDto =  service.findAllByCategoryProductAndIsEnabledTrue(mapper.map(dto, CategoryProduct.class)).stream().map(this::mapFromEntityToDto).toList();
         return new ResponseEntity<>(listDataDto, HttpStatus.OK);
     }
 

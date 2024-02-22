@@ -7,6 +7,8 @@ import com.ventasx.SistemaVentas.Service.IBrandProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class BrandProductServiceImpl extends CrudServiceImpl<BrandProduct, Long> implements IBrandProductService {
@@ -16,5 +18,10 @@ public class BrandProductServiceImpl extends CrudServiceImpl<BrandProduct, Long>
     @Override
     protected IGenericRepository<BrandProduct, Long> getRepo() {
         return repository;
+    }
+
+    @Override
+    public List<BrandProduct> findAllByIsEnabledTrue() {
+        return repository.findAllByIsEnabledTrue();
     }
 }

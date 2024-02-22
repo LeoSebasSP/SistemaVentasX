@@ -62,7 +62,6 @@ export class LoginService {
         if (isValid) {
           return of(
             new HttpHeaders()
-              .set('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8')
               .set('Authorization', 'Bearer ' + sessionStorage.getItem(environment.TOKEN_NAME))
           );
         } else {

@@ -40,7 +40,7 @@ public class BrandProductController extends MapperBetweenDtoAndEntity<BrandProdu
 
     @GetMapping
     public ResponseEntity<List<BrandProductDto>> listAllData() throws Exception{
-        List<BrandProductDto> listDataDto =  service.getAll().stream().map(this::mapFromEntityToDto).toList();
+        List<BrandProductDto> listDataDto =  service.findAllByIsEnabledTrue().stream().map(this::mapFromEntityToDto).toList();
         return new ResponseEntity<>(listDataDto, HttpStatus.OK);
     }
 

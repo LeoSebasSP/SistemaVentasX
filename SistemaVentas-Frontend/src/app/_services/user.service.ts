@@ -17,10 +17,10 @@ export class UserService extends GenericService<User>{
 
   constructor(
     protected override http: HttpClient,
-    private router: Router,
-    private loginService: LoginService
+    protected override loginService: LoginService,
+    private router: Router
   ) {
-    super(http, `${environment.HOST}/users`);
+    super(http, loginService, `${environment.HOST}/users`);
   }
 
   listMenuByUsername() {

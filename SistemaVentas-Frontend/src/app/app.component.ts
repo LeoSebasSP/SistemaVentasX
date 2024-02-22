@@ -15,7 +15,7 @@ import { CommonModule } from '@angular/common';
     FormsModule, //Two Way Biding
     HttpClientModule,
     RouterOutlet,
-    HttpClientModule
+    HttpClientModule,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',

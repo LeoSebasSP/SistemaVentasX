@@ -1,10 +1,12 @@
 package com.ventasx.SistemaVentas.Persistence.Entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -26,9 +28,13 @@ public class BrandProduct {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @NotBlank(message = "{brandProduct.name.notBlank}")
+    @Length(message = "{brandProduct.name.length}")
+    @Column(nullable = false, length = 100)
     private String name;
 
+    @Length(message = "{brandProduct.description.length}")
+    @Column(length = 200)
     private String description;
 
     @CreatedDate

@@ -1,5 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
+import { LoginService } from './login.service';
+import { switchMap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -8,30 +10,55 @@ export class GenericService<T> {
 
   constructor(
     protected http: HttpClient,
+    protected loginService: LoginService,
     @Inject('url') protected url: string
   ) {}
 
   listarPagination(p:number, s:number) {
-    return this.http.get<any>(`${this.url}/pagination/?page=${p}&size=${s}`);
+    return this.loginService.getAuthTokenHeaders().pipe(
+      switchMap(headers => {
+        return this.http.get<any>(`${this.url}/pagination/?page=${p}&size=${s}`, {headers});
+      })
+    )
   }
 
   listar() {
-    return this.http.get<T[]>(`${this.url}`);
+    return this.loginService.getAuthTokenHeaders().pipe(
+      switchMap(headers => {
+        return this.http.get<T[]>(`${this.url}`, {headers});
+      })
+    )
   }
 
   listarPorId(id: number) {
-    return this.http.get<T>(`${this.url}/${id}`);
+    return this.loginService.getAuthTokenHeaders().pipe(
+      switchMap(headers => {
+        return this.http.get<T>(`${this.url}/${id}`, {headers});
+      })
+    )
   }
 
   registrar(t: T) {
-    return this.http.post(this.url, t);
+    return this.loginService.getAuthTokenHeaders().pipe(
+      switchMap(headers => {
+        return this.http.post(this.url, t, {headers});
+      })
+    )
   }
 
   modificar(t: T) {
-    return this.http.put(this.url, t);
+    return this.loginService.getAuthTokenHeaders().pipe(
+      switchMap(headers => {
+        return this.http.put(this.url, t, {headers});
+      })
+    )
   }
 
   delete(id: number) {
-    return this.http.delete(`${this.url}/${id}`);
+    return this.loginService.getAuthTokenHeaders().pipe(
+      switchMap(headers => {
+        return this.http.delete(`${this.url}/${id}`, {headers});
+      })
+    )
   }
 }

@@ -1,5 +1,6 @@
 package com.ventasx.SistemaVentas.Service.Impl;
 
+import com.ventasx.SistemaVentas.Persistence.Entity.GroupProduct;
 import com.ventasx.SistemaVentas.Persistence.Entity.Product;
 import com.ventasx.SistemaVentas.Persistence.Repository.IProductRepository;
 import com.ventasx.SistemaVentas.Persistence.Repository.IGenericRepository;

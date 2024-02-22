@@ -1,9 +1,12 @@
 package com.ventasx.SistemaVentas.Controller;
 
 import com.ventasx.SistemaVentas.Controller.Dto.CategoryProductDto;
+import com.ventasx.SistemaVentas.Controller.Dto.GroupProductDto;
 import com.ventasx.SistemaVentas.Controller.Mapper.MapperBetweenDtoAndEntity;
 import com.ventasx.SistemaVentas.Persistence.Entity.CategoryProduct;
+import com.ventasx.SistemaVentas.Persistence.Entity.GroupProduct;
 import com.ventasx.SistemaVentas.Service.ICategoryProductService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,14 +36,20 @@ public class CategoryProductController extends MapperBetweenDtoAndEntity<Categor
     }
 
     @PostMapping
-    public ResponseEntity<CategoryProductDto> createData(@RequestBody CategoryProductDto dto) throws Exception{
+    public ResponseEntity<CategoryProductDto> createData(@RequestBody @Valid CategoryProductDto dto) throws Exception{
         CategoryProductDto dataDto = mapFromEntityToDto(service.create(mapFromDtoRequestToEntity(dto)));
         return new ResponseEntity<>(dataDto, HttpStatus.CREATED);
     }
 
     @GetMapping
     public ResponseEntity<List<CategoryProductDto>> listAllData() throws Exception{
-        List<CategoryProductDto> listDataDto =  service.getAll().stream().map(this::mapFromEntityToDto).toList();
+        List<CategoryProductDto> listDataDto =  service.findAllByIsEnabledTrue().stream().map(this::mapFromEntityToDto).toList();
+        return new ResponseEntity<>(listDataDto, HttpStatus.OK);
+    }
+
+    @PostMapping("/by-group-product")
+    public ResponseEntity<List<CategoryProductDto>> listAllDataByGroupProduct(@RequestBody @Valid GroupProductDto dto) throws Exception{
+        List<CategoryProductDto> listDataDto =  service.findAllByGroupProductAndIsEnabledTrue(mapper.map(dto, GroupProduct.class)).stream().map(this::mapFromEntityToDto).toList();
         return new ResponseEntity<>(listDataDto, HttpStatus.OK);
     }
 

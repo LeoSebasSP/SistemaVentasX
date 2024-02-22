@@ -1,23 +1,21 @@
 import { Injectable } from '@angular/core';
 import { GenericService } from './generic.service';
-import { Product } from '../_model/product';
+import { MeasureUnit } from '../_model/measureUnit';
 import { HttpClient } from '@angular/common/http';
+import { LoginService } from './login.service';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
-import { LoginService } from './login.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ProductService extends GenericService<Product>{
+export class MeasureUnitService extends GenericService<MeasureUnit>{
 
   constructor(
     protected override http: HttpClient,
     protected override loginService: LoginService,
     private router: Router
   ) {
-    super(http, loginService, `${environment.HOST}/products`);
+    super(http, loginService, `${environment.HOST}/measure-units`)
   }
-
-  
 }

@@ -16,6 +16,11 @@ import { TagModule } from 'primeng/tag';
 import { DropdownModule } from 'primeng/dropdown';
 import { DialogModule } from 'primeng/dialog';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { DividerModule } from 'primeng/divider';
+import { CascadeSelectModule } from 'primeng/cascadeselect';
+import { TabViewModule } from 'primeng/tabview';
+import { ListboxModule } from 'primeng/listbox';
+import { InputNumberModule } from 'primeng/inputnumber';
 
 @NgModule({
   declarations: [],
@@ -38,7 +43,12 @@ import { RadioButtonModule } from 'primeng/radiobutton';
     TagModule,
     DropdownModule,
     DialogModule,
-    RadioButtonModule
+    RadioButtonModule,
+    DividerModule,
+    CascadeSelectModule,
+    TabViewModule,
+    ListboxModule,
+    InputNumberModule
   ]
 })
 export class PrimengModule { }

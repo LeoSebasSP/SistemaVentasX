@@ -1,10 +1,13 @@
 package com.ventasx.SistemaVentas.Persistence.Entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -26,34 +29,47 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @NotBlank(message = "{product.name.notBlank}")
+    @Length(message = "{product.name.length}")
+    @Column(nullable = false, length = 300)
     private String name;
 
-    @Column(nullable = false)
+    @NotBlank(message = "{product.code.notBlank}")
+    @Length(message = "{product.code.length}")
+    @Column(nullable = false, length = 50)
     private String code;
 
+    @Length(message = "{product.codeAux.length}")
+    @Column(length = 50)
     private String codeAux;
 
+    @Length(message = "{product.description.length}")
+    @Column(length = 500)
     private String description;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "group_product_id", referencedColumnName = "id", nullable = false, foreignKey = @ForeignKey(name = "FK_product_groupProduct"))
+    @NotNull(message = "{product.groupProduct.notNull}")
     private GroupProduct groupProduct;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_product_id", referencedColumnName = "id", nullable = false, foreignKey = @ForeignKey(name = "FK_product_categoryProduct"))
+    @NotNull(message = "{product.categoryProduct.notNull}")
     private CategoryProduct categoryProduct;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "type_product_id", referencedColumnName = "id", nullable = false, foreignKey = @ForeignKey(name = "FK_product_typeProduct"))
+    @NotNull(message = "{product.typeProduct.notNull}")
     private TypeProduct typeProduct;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "brand_product_id", referencedColumnName = "id", nullable = false, foreignKey = @ForeignKey(name = "FK_product_brandProduct"))
+    @NotNull(message = "{product.brandProduct.notNull}")
     private BrandProduct brandProduct;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "measure_unit_id", referencedColumnName = "id", nullable = false, foreignKey = @ForeignKey(name = "FK_product_measureUnit"))
+    @NotNull(message = "{product.measureUnit.notNull}")
     private MeasureUnit measureUnit;
 
     private Long parentProductId;

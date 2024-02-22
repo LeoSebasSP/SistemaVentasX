@@ -40,7 +40,7 @@ public class MeasureUnitController extends MapperBetweenDtoAndEntity<MeasureUnit
 
     @GetMapping
     public ResponseEntity<List<MeasureUnitDto>> listAllData() throws Exception{
-        List<MeasureUnitDto> listDataDto =  service.getAll().stream().map(this::mapFromEntityToDto).toList();
+        List<MeasureUnitDto> listDataDto =  service.findAllByIsEnabledTrue().stream().map(this::mapFromEntityToDto).toList();
         return new ResponseEntity<>(listDataDto, HttpStatus.OK);
     }
 

@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public abstract class MapperBetweenDtoAndEntity<DTO, T> {
 
     @Autowired
-    private ModelMapper mapper;
+    protected ModelMapper mapper;
 
     protected abstract Class<T> getTClass();
     protected abstract Class<DTO> getDTOClass();

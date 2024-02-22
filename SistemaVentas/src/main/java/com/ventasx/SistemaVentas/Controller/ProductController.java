@@ -4,6 +4,7 @@ import com.ventasx.SistemaVentas.Controller.Dto.ProductDto;
 import com.ventasx.SistemaVentas.Controller.Mapper.MapperBetweenDtoAndEntity;
 import com.ventasx.SistemaVentas.Persistence.Entity.Product;
 import com.ventasx.SistemaVentas.Service.IProductService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,7 +34,15 @@ public class ProductController extends MapperBetweenDtoAndEntity<ProductDto, Pro
     }
 
     @PostMapping
-    public ResponseEntity<ProductDto> createData(@RequestBody ProductDto dto) throws Exception{
+    public ResponseEntity<ProductDto> createData(@RequestBody @Valid ProductDto dto) throws Exception{
+        dto.setName(dto.getName().trim());
+        dto.setCode(dto.getCode().trim());
+        if (dto.getCodeAux() != null){
+            dto.setCodeAux(dto.getCodeAux().trim());
+        }
+        if (dto.getDescription() != null){
+            dto.setDescription(dto.getDescription().trim());
+        }
         ProductDto dataDto = mapFromEntityToDto(service.create(mapFromDtoRequestToEntity(dto)));
         return new ResponseEntity<>(dataDto, HttpStatus.CREATED);
     }
@@ -60,7 +69,7 @@ public class ProductController extends MapperBetweenDtoAndEntity<ProductDto, Pro
     }
 
     @PutMapping()
-    public ResponseEntity<ProductDto> updateData(@RequestBody ProductDto dto) throws Exception {
+    public ResponseEntity<ProductDto> updateData(@RequestBody @Valid ProductDto dto) throws Exception {
         Product data = service.getById(dto.getId());
 //        if (paciente == null) {
 //            throw new ResourceNotFound("Paciente", "id", pacienteDto.getPaciente_id());
