@@ -2,6 +2,7 @@ package com.ventasx.SistemaVentas.Controller;
 
 import com.ventasx.SistemaVentas.Controller.Dto.UserDto;
 import com.ventasx.SistemaVentas.Controller.Mapper.MapperBetweenDtoAndEntity;
+import com.ventasx.SistemaVentas.Exception.ResourceNotFound;
 import com.ventasx.SistemaVentas.Persistence.Entity.Menu;
 import com.ventasx.SistemaVentas.Persistence.Entity.SubMenu;
 import com.ventasx.SistemaVentas.Persistence.Entity.User;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/ventasx/v1/users")
@@ -32,39 +34,22 @@ public class UserController extends MapperBetweenDtoAndEntity<UserDto, User> {
 
     @GetMapping("/by-username/{username}")
     public ResponseEntity<UserDto> getUserByUsername(@PathVariable(value = "username") String username) throws Exception {
-        if (service.findByUsername(username).isPresent()){
-            User user = service.findByUsername(username).get();
-            return new ResponseEntity<>(mapFromEntityToDto(user), HttpStatus.OK);
-        }
-//		if (usuario == null) {
-//			throw new ResourceNotFound("Usuario", "username", username);
-//		}
-        return null;
+        Optional<User> user = service.findByUsername(username);
+        return user.map(value -> new ResponseEntity<>(mapFromEntityToDto(user.get()), HttpStatus.OK))
+                .orElseThrow(() -> new ResourceNotFound("Usuario", "username", username));
     }
 
     @GetMapping("/submenus-by-username/{username}")
     public ResponseEntity<List<SubMenu>> listSubmenuByUser(@PathVariable(value = "username") String username) throws Exception {
-        if (service.findByUsername(username).isPresent()){
-            User user = service.findByUsername(username).get();
-            List<SubMenu> list = service.listSubmenuByUser(user.getId());
-            return new ResponseEntity<>(list, HttpStatus.OK);
-        }
-//		if (usuario == null) {
-//			throw new ResourceNotFound("Usuario", "username", username);
-//		}
-        return null;
+        Optional<User> user = service.findByUsername(username);
+        return user.map(value -> new ResponseEntity<>(service.listSubmenuByUser(value.getId()), HttpStatus.OK))
+                .orElseThrow(() -> new ResourceNotFound("Usuario", "username", username));
     }
 
     @GetMapping("/menus-by-username/{username}")
     public ResponseEntity<List<Menu>> listMenuByUser(@PathVariable(value = "username") String username) throws Exception {
-        if (service.findByUsername(username).isPresent()){
-            User user = service.findByUsername(username).get();
-            List<Menu> list = service.listMenuByUser(user.getId());
-            return new ResponseEntity<>(list, HttpStatus.OK);
-        }
-//		if (usuario == null) {
-//			throw new ResourceNotFound("Usuario", "username", username);
-//		}
-        return null;
+        Optional<User> user = service.findByUsername(username);
+        return user.map(value -> new ResponseEntity<>(service.listMenuByUser(user.get().getId()), HttpStatus.OK))
+                .orElseThrow(() -> new ResourceNotFound("Usuario", "username", username));
     }
 }

@@ -45,6 +45,8 @@ public class Address {
     @JoinColumn(name = "ubigeo_id", referencedColumnName = "id", nullable = false, foreignKey = @ForeignKey(name = "FK_address_ubigeo"))
     private Ubigeo ubigeo;
 
+    public Boolean isEnabled = true;
+
     @CreatedDate
     @Column(
             nullable = false,

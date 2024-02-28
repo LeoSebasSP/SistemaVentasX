@@ -2,36 +2,24 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e6865fc3-0f22-413b-a40e-ebf7e57270b8" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/SistemaVentas/src/main/java/com/ventasx/SistemaVentas/Controller/Dto/CategoryProductCascadeSelect.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SistemaVentas/src/main/java/com/ventasx/SistemaVentas/Controller/Dto/GroupProductCascadeSelect.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SistemaVentas/src/main/java/com/ventasx/SistemaVentas/Controller/Dto/TypeProductCascadeSelect.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SistemaVentas-Frontend/angular.json" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaVentas-Frontend/angular.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SistemaVentas/src/main/java/com/ventasx/SistemaVentas/Exception/ErrorMapMessageDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SistemaVentas/src/main/java/com/ventasx/SistemaVentas/Exception/ResourceNotFound.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SistemaVentas-Frontend/src/app/_model/product.ts" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaVentas-Frontend/src/app/_model/product.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SistemaVentas-Frontend/src/app/_model/submenu.ts" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaVentas-Frontend/src/app/_model/submenu.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SistemaVentas-Frontend/src/app/_model/user.ts" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaVentas-Frontend/src/app/_model/user.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SistemaVentas-Frontend/src/app/_primeng/primeng.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaVentas-Frontend/src/app/_primeng/primeng.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SistemaVentas-Frontend/src/app/_services/generic.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaVentas-Frontend/src/app/_services/generic.service.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SistemaVentas-Frontend/src/app/_services/product.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaVentas-Frontend/src/app/_services/product.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SistemaVentas-Frontend/src/app/_services/user.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaVentas-Frontend/src/app/_services/user.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SistemaVentas-Frontend/src/app/app.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaVentas-Frontend/src/app/app.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SistemaVentas-Frontend/src/app/app.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaVentas-Frontend/src/app/app.config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaVentas-Frontend/src/app/pages/login/login.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaVentas-Frontend/src/app/pages/login/login.component.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SistemaVentas-Frontend/src/app/pages/product/product.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaVentas-Frontend/src/app/pages/product/product.component.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SistemaVentas-Frontend/src/app/pages/product/product.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaVentas-Frontend/src/app/pages/product/product.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SistemaVentas/src/main/java/com/ventasx/SistemaVentas/Controller/Dto/CategoryProductDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaVentas/src/main/java/com/ventasx/SistemaVentas/Controller/Dto/CategoryProductDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SistemaVentas/src/main/java/com/ventasx/SistemaVentas/Controller/Dto/GroupProductDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaVentas/src/main/java/com/ventasx/SistemaVentas/Controller/Dto/GroupProductDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SistemaVentas/src/main/java/com/ventasx/SistemaVentas/Controller/Dto/MeasureUnitDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaVentas/src/main/java/com/ventasx/SistemaVentas/Controller/Dto/MeasureUnitDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaVentas/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaVentas/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SistemaVentas/src/main/java/com/ventasx/SistemaVentas/Controller/Dto/ProductDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaVentas/src/main/java/com/ventasx/SistemaVentas/Controller/Dto/ProductDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SistemaVentas/src/main/java/com/ventasx/SistemaVentas/Controller/Dto/TypeProductDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaVentas/src/main/java/com/ventasx/SistemaVentas/Controller/Dto/TypeProductDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SistemaVentas/src/main/java/com/ventasx/SistemaVentas/Controller/GroupProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaVentas/src/main/java/com/ventasx/SistemaVentas/Controller/GroupProductController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SistemaVentas/src/main/java/com/ventasx/SistemaVentas/Controller/Mapper/MapperBetweenDtoAndEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaVentas/src/main/java/com/ventasx/SistemaVentas/Controller/Mapper/MapperBetweenDtoAndEntity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SistemaVentas/src/main/java/com/ventasx/SistemaVentas/Controller/ProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaVentas/src/main/java/com/ventasx/SistemaVentas/Controller/ProductController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SistemaVentas/src/main/java/com/ventasx/SistemaVentas/Persistence/Entity/CategoryProduct.java" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaVentas/src/main/java/com/ventasx/SistemaVentas/Persistence/Entity/CategoryProduct.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SistemaVentas/src/main/java/com/ventasx/SistemaVentas/Persistence/Entity/GroupProduct.java" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaVentas/src/main/java/com/ventasx/SistemaVentas/Persistence/Entity/GroupProduct.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SistemaVentas/src/main/java/com/ventasx/SistemaVentas/Persistence/Entity/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaVentas/src/main/java/com/ventasx/SistemaVentas/Persistence/Entity/Product.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SistemaVentas/src/main/java/com/ventasx/SistemaVentas/Persistence/Entity/TypeProduct.java" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaVentas/src/main/java/com/ventasx/SistemaVentas/Persistence/Entity/TypeProduct.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaVentas/src/main/java/com/ventasx/SistemaVentas/Exception/ControllerAdvice.java" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaVentas/src/main/java/com/ventasx/SistemaVentas/Exception/ControllerAdvice.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaVentas/src/main/java/com/ventasx/SistemaVentas/Exception/ErrorMessageDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaVentas/src/main/java/com/ventasx/SistemaVentas/Exception/ErrorMessageDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaVentas/src/main/java/com/ventasx/SistemaVentas/Persistence/Repository/IGroupProductRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaVentas/src/main/java/com/ventasx/SistemaVentas/Persistence/Repository/IGroupProductRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaVentas/src/main/java/com/ventasx/SistemaVentas/Persistence/Repository/IMeasureUnitRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaVentas/src/main/java/com/ventasx/SistemaVentas/Persistence/Repository/IMeasureUnitRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaVentas/src/main/java/com/ventasx/SistemaVentas/Persistence/Repository/IProductRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaVentas/src/main/java/com/ventasx/SistemaVentas/Persistence/Repository/IProductRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SistemaVentas/src/main/java/com/ventasx/SistemaVentas/Service/IProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaVentas/src/main/java/com/ventasx/SistemaVentas/Service/IProductService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SistemaVentas/src/main/java/com/ventasx/SistemaVentas/Service/Impl/ProductServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaVentas/src/main/java/com/ventasx/SistemaVentas/Service/Impl/ProductServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SistemaVentas/src/main/java/com/ventasx/SistemaVentas/SistemaVentasApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaVentas/src/main/java/com/ventasx/SistemaVentas/SistemaVentasApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SistemaVentas/src/main/resources/messages.properties" beforeDir="false" afterPath="$PROJECT_DIR$/SistemaVentas/src/main/resources/messages.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,22 +32,22 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 4
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
   <component name="ProjectId" id="2cbuvjQJ0b7xsR7UeguM4QqbILk" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">

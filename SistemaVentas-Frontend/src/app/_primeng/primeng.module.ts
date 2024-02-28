@@ -21,6 +21,7 @@ import { CascadeSelectModule } from 'primeng/cascadeselect';
 import { TabViewModule } from 'primeng/tabview';
 import { ListboxModule } from 'primeng/listbox';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { PaginatorModule } from 'primeng/paginator';
 
 @NgModule({
   declarations: [],
@@ -48,7 +49,8 @@ import { InputNumberModule } from 'primeng/inputnumber';
     CascadeSelectModule,
     TabViewModule,
     ListboxModule,
-    InputNumberModule
+    InputNumberModule,
+    PaginatorModule
   ]
 })
 export class PrimengModule { }

@@ -2,6 +2,7 @@ package com.ventasx.SistemaVentas.Controller;
 
 import com.ventasx.SistemaVentas.Controller.Dto.ExternalEntityDto;
 import com.ventasx.SistemaVentas.Controller.Mapper.MapperBetweenDtoAndEntity;
+import com.ventasx.SistemaVentas.Exception.ResourceNotFound;
 import com.ventasx.SistemaVentas.Persistence.Entity.ExternalEntity;
 import com.ventasx.SistemaVentas.Service.IExternalEntityService;
 import jakarta.validation.Valid;
@@ -36,19 +37,17 @@ public class ExternalEntityController extends MapperBetweenDtoAndEntity<External
     }
 
     @PostMapping
-    public ResponseEntity<ExternalEntityDto> createData(@RequestBody @Valid ExternalEntityDto request) throws Exception {
-        ExternalEntity data = service.create(mapFromDtoRequestToEntity(request));
-        //return ResponseEntity.accepted().build();
+    public ResponseEntity<ExternalEntityDto> createData(@RequestBody @Valid ExternalEntityDto dto) throws Exception {
+        ExternalEntity data = service.create(mapFromDtoRequestToEntity(dto));
         return new ResponseEntity<>(mapFromEntityToDto(data), HttpStatus.CREATED);
     }
 
     @PutMapping
-    public ResponseEntity<ExternalEntityDto> update(@RequestBody @Valid ExternalEntityDto request) throws Exception {
-        if (service.getById(request.getId()) == null){
-            throw new Exception("Data not found.");
+    public ResponseEntity<ExternalEntityDto> update(@RequestBody @Valid ExternalEntityDto dto) throws Exception {
+        if (service.getById(dto.getId()) == null){
+            throw new ResourceNotFound("Tercero", "id", String.valueOf(dto.getId()));
         }
-        ExternalEntity data = service.update(mapFromDtoRequestToEntity(request));
-        return new ResponseEntity<>(mapFromEntityToDto(data), HttpStatus.OK);
+        return new ResponseEntity<>(mapFromEntityToDto(service.update(mapFromDtoRequestToEntity(dto))), HttpStatus.OK);
     }
 
 

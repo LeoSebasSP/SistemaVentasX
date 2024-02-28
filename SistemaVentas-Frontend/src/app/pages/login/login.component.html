@@ -6,10 +6,10 @@
 
     <div>
         <label for="user" class="block text-900 font-medium mb-2">Usuario</label>
-        <input id="user" type="text" placeholder="Usuario" class="w-full mb-3 p-inputtext" [(ngModel)]="user">
+        <input id="user" type="text" placeholder="Usuario" class="w-full mb-3 p-inputtext" [(ngModel)]="user" (keydown.enter)="iniciarSesion()">
 
         <label for="password" class="block text-900 font-medium mb-2">Contraseña</label>
-        <input id="password" type="password" placeholder="Contraseña" class="w-full mb-3 p-inputtext" [(ngModel)]="password">
+        <input id="password" type="password" placeholder="Contraseña" class="w-full mb-3 p-inputtext" [(ngModel)]="password" (keydown.enter)="iniciarSesion()">
 
         <button pButton pRipple label="Ingresar" icon="pi pi-user" class="w-full" (click)="iniciarSesion()"></button>
     </div>

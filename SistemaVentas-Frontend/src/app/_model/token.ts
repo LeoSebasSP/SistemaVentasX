@@ -7,6 +7,7 @@ export class Token{
   revoked!: boolean;
   expired!: boolean;
   user!: User;
+  isEnabled!: boolean;
   creationDate!: string;
   updateDate!: string;
 }

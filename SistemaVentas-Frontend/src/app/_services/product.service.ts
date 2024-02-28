@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { LoginService } from './login.service';
+import { switchMap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -19,5 +20,28 @@ export class ProductService extends GenericService<Product>{
     super(http, loginService, `${environment.HOST}/products`);
   }
 
+  disableProducts(listId: bigint[]) {
+    return this.loginService.getAuthTokenHeaders().pipe(
+      switchMap(headers => {
+        return this.http.put(`${this.url}/disable`, listId, {headers});
+      })
+    )
+  }
+
+  enableProducts(listId: bigint[]) {
+    return this.loginService.getAuthTokenHeaders().pipe(
+      switchMap(headers => {
+        return this.http.put(`${this.url}/enable`, listId, {headers});
+      })
+    )
+  }
+
+  listarProductsDisable() {
+    return this.loginService.getAuthTokenHeaders().pipe(
+      switchMap(headers => {
+        return this.http.get<Product[]>(`${this.url}/disable`, {headers});
+      })
+    )
+  }
   
 }

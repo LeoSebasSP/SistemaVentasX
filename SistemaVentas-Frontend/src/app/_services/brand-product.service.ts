@@ -20,11 +20,4 @@ export class BrandProductService extends GenericService<BrandProduct>{
     super(http, loginService, `${environment.HOST}/brands-product`)
   }
 
-  listarBrandsEnabled() {
-    return this.loginService.getAuthTokenHeaders().pipe(
-      switchMap(headers => {
-        return this.http.get<BrandProduct[]>(`${this.url}`, {headers});
-      })
-    )
-  }
 }

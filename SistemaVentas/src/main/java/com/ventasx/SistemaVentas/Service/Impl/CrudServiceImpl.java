@@ -39,4 +39,24 @@ public abstract class CrudServiceImpl<T, ID> implements ICrudService<T, ID> {
     public void delete(ID id) throws Exception {
         getRepo().deleteById(id);
     }
+
+    @Override
+    public Page<T> findAllByIsEnabledTrueOrderByCreationDateDescPagination(Pageable pageable){
+        return getRepo().findAllByIsEnabledTrueOrderByCreationDateDesc(pageable);
+    }
+
+    @Override
+    public Page<T> findAllByIsEnabledFalseOrderByCreationDateDescPagination(Pageable pageable){
+        return getRepo().findAllByIsEnabledFalseOrderByCreationDateDesc(pageable);
+    }
+
+    @Override
+    public List<T> findAllByIsEnabledTrueOrderByCreationDateDesc(){
+        return getRepo().findAllByIsEnabledTrueOrderByCreationDateDesc();
+    }
+
+    @Override
+    public List<T> findAllByIsEnabledFalseOrderByCreationDateDesc(){
+        return getRepo().findAllByIsEnabledFalseOrderByCreationDateDesc();
+    }
 }

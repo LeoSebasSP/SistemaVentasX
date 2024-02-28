@@ -7,7 +7,5 @@ import java.util.List;
 
 public interface ICategoryProductService extends ICrudService<CategoryProduct, Long>{
 
-    List<CategoryProduct> findAllByIsEnabledTrue();
-
     List<CategoryProduct> findAllByGroupProductAndIsEnabledTrue(GroupProduct groupProduct);
 }

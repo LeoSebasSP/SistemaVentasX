@@ -1,7 +1,9 @@
 package com.ventasx.SistemaVentas.Controller;
 
 import com.ventasx.SistemaVentas.Controller.Dto.MeasureUnitDto;
+import com.ventasx.SistemaVentas.Controller.Dto.SuccessMessageDto;
 import com.ventasx.SistemaVentas.Controller.Mapper.MapperBetweenDtoAndEntity;
+import com.ventasx.SistemaVentas.Exception.ResourceNotFound;
 import com.ventasx.SistemaVentas.Persistence.Entity.MeasureUnit;
 import com.ventasx.SistemaVentas.Service.IMeasureUnitService;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -40,7 +43,7 @@ public class MeasureUnitController extends MapperBetweenDtoAndEntity<MeasureUnit
 
     @GetMapping
     public ResponseEntity<List<MeasureUnitDto>> listAllData() throws Exception{
-        List<MeasureUnitDto> listDataDto =  service.findAllByIsEnabledTrue().stream().map(this::mapFromEntityToDto).toList();
+        List<MeasureUnitDto> listDataDto =  service.findAllByIsEnabledTrueOrderByCreationDateDesc().stream().map(this::mapFromEntityToDto).toList();
         return new ResponseEntity<>(listDataDto, HttpStatus.OK);
     }
 
@@ -53,27 +56,27 @@ public class MeasureUnitController extends MapperBetweenDtoAndEntity<MeasureUnit
     @GetMapping("/{id}")
     public ResponseEntity<MeasureUnitDto> listDataById(@PathVariable("id") Integer id) throws Exception{
         MeasureUnit data = service.getById(id);
-//        if (data == null) {
-//            throw new ResourceNotFound("Paciente", "id", pacienteDto.getPaciente_id());
-//        }
+        if (data == null) {
+            throw new ResourceNotFound("Unidad Medida", "id", String.valueOf(id));
+        }
         return new ResponseEntity<>(mapFromEntityToDto(data), HttpStatus.OK);
     }
 
     @PutMapping()
     public ResponseEntity<MeasureUnitDto> updateData(@RequestBody MeasureUnitDto dto) throws Exception {
-        MeasureUnit data = service.getById(dto.getId());
-//        if (paciente == null) {
-//            throw new ResourceNotFound("Paciente", "id", pacienteDto.getPaciente_id());
-//        }
-        return new ResponseEntity<>(mapFromEntityToDto(service.update(data)), HttpStatus.OK);
+        if (service.getById(dto.getId()) == null) {
+            throw new ResourceNotFound("Unidad Medida", "id", String.valueOf(dto.getId()));
+        }
+        return new ResponseEntity<>(mapFromEntityToDto(service.update(mapFromDtoRequestToEntity(dto))), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteData(@PathVariable(value = "id") Integer id) throws Exception {
-        MeasureUnit data = service.getById(id);
-//        if (paciente == null) {
-//            throw new ResourceNotFound("Paciente", "id", paciente_id);
-//        }
+    public ResponseEntity<SuccessMessageDto> deleteData(@PathVariable(value = "id") Integer id) throws Exception {
+        if (service.getById(id) == null) {
+            throw new ResourceNotFound("Unidad Medida", "id", String.valueOf(id));
+        }
         service.delete(id);
+        return new ResponseEntity<>(SuccessMessageDto.builder().statusCode(HttpStatus.OK.value()).timestamp(LocalDateTime.now())
+                .message("Registro eliminado exitosamente.").build(), HttpStatus.OK);
     }
 }

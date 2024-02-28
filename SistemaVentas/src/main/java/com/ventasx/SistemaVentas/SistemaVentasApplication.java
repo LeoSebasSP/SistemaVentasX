@@ -68,6 +68,8 @@ public class SistemaVentasApplication {
 					.id(1)
 					.name("Mantenimiento")
 					.icon("pi-wrench")
+					.creationDate(LocalDateTime.now())
+					.userCreatorId(1L)
 					.build();
 			Menu maintenanceMenuCreated = iMenuService.create(maintenanceMenu);
 			System.out.printf("Menu maintenance created: %d - %s - %s\n",maintenanceMenuCreated.getId(), maintenanceMenuCreated.getName(),
@@ -77,6 +79,8 @@ public class SistemaVentasApplication {
 					.id(2)
 					.name("Seguridad")
 					.icon("pi-lock")
+					.creationDate(LocalDateTime.now())
+					.userCreatorId(1L)
 					.build();
 			Menu securityMenuCreated = iMenuService.create(securityMenu);
 			System.out.printf("Menu security created: %d - %s - %s\n",securityMenuCreated.getId(), securityMenuCreated.getName(),
@@ -89,6 +93,8 @@ public class SistemaVentasApplication {
 					.icon("pi-box")
 					.url("/pages/products")
 					.menu(maintenanceMenuCreated)
+					.creationDate(LocalDateTime.now())
+					.userCreatorId(1L)
 					.build();
 			SubMenu productMenuCreated = iSubMenuService.create(productSubmenu);
 			System.out.printf("SubMenu product created: %d - %s - %s - %s - %s\n",productMenuCreated.getId(), productMenuCreated.getName(),
@@ -100,6 +106,8 @@ public class SistemaVentasApplication {
 					.icon("pi-filter")
 					.url("/pages/measure-units")
 					.menu(maintenanceMenuCreated)
+					.creationDate(LocalDateTime.now())
+					.userCreatorId(1L)
 					.build();
 			SubMenu measureUnitMenuCreated = iSubMenuService.create(measureUnitSubmenu);
 			System.out.printf("SubMenu product created: %d - %s - %s - %s - %s\n",measureUnitMenuCreated.getId(), measureUnitMenuCreated.getName(),
@@ -111,6 +119,8 @@ public class SistemaVentasApplication {
 					.icon("pi-users")
 					.url("/pages/users")
 					.menu(securityMenuCreated)
+					.creationDate(LocalDateTime.now())
+					.userCreatorId(1L)
 					.build();
 			SubMenu usersSubmenuCreated = iSubMenuService.create(usersSubmenu);
 			System.out.printf("SubMenu product created: %d - %s - %s - %s - %s\n",usersSubmenuCreated.getId(), usersSubmenuCreated.getName(),

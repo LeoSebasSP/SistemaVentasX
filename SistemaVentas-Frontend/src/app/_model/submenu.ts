@@ -6,4 +6,9 @@ export class Submenu{
   name!: string;
   url!: string;
   menu!: Menu;
+  isEnabled!: boolean;
+  creationDate!: string;
+  updateDate!: string;
+  userCreatorId!: bigint;
+  userUpdaterId!: bigint;
 }

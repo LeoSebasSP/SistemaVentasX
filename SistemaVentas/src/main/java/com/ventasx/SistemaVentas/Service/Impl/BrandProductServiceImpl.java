@@ -20,8 +20,4 @@ public class BrandProductServiceImpl extends CrudServiceImpl<BrandProduct, Long>
         return repository;
     }
 
-    @Override
-    public List<BrandProduct> findAllByIsEnabledTrue() {
-        return repository.findAllByIsEnabledTrue();
-    }
 }

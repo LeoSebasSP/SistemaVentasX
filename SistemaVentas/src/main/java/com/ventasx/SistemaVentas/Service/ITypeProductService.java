@@ -8,7 +8,5 @@ import java.util.List;
 
 public interface ITypeProductService extends ICrudService<TypeProduct, Long> {
 
-    List<TypeProduct> findAllByIsEnabledTrue();
-
     List<TypeProduct> findAllByCategoryProductAndIsEnabledTrue(CategoryProduct categoryProduct);
 }

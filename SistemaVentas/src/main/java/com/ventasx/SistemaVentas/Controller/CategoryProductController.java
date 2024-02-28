@@ -2,7 +2,9 @@ package com.ventasx.SistemaVentas.Controller;
 
 import com.ventasx.SistemaVentas.Controller.Dto.CategoryProductDto;
 import com.ventasx.SistemaVentas.Controller.Dto.GroupProductDto;
+import com.ventasx.SistemaVentas.Controller.Dto.SuccessMessageDto;
 import com.ventasx.SistemaVentas.Controller.Mapper.MapperBetweenDtoAndEntity;
+import com.ventasx.SistemaVentas.Exception.ResourceNotFound;
 import com.ventasx.SistemaVentas.Persistence.Entity.CategoryProduct;
 import com.ventasx.SistemaVentas.Persistence.Entity.GroupProduct;
 import com.ventasx.SistemaVentas.Service.ICategoryProductService;
@@ -16,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -43,7 +46,7 @@ public class CategoryProductController extends MapperBetweenDtoAndEntity<Categor
 
     @GetMapping
     public ResponseEntity<List<CategoryProductDto>> listAllData() throws Exception{
-        List<CategoryProductDto> listDataDto =  service.findAllByIsEnabledTrue().stream().map(this::mapFromEntityToDto).toList();
+        List<CategoryProductDto> listDataDto =  service.findAllByIsEnabledTrueOrderByCreationDateDesc().stream().map(this::mapFromEntityToDto).toList();
         return new ResponseEntity<>(listDataDto, HttpStatus.OK);
     }
 
@@ -62,27 +65,27 @@ public class CategoryProductController extends MapperBetweenDtoAndEntity<Categor
     @GetMapping("/{id}")
     public ResponseEntity<CategoryProductDto> listDataById(@PathVariable("id") Long id) throws Exception{
         CategoryProduct data = service.getById(id);
-//        if (data == null) {
-//            throw new ResourceNotFound("Paciente", "id", pacienteDto.getPaciente_id());
-//        }
+        if (data == null) {
+            throw new ResourceNotFound("Categoria Producto", "id", String.valueOf(id));
+        }
         return new ResponseEntity<>(mapFromEntityToDto(data), HttpStatus.OK);
     }
 
     @PutMapping()
     public ResponseEntity<CategoryProductDto> updateData(@RequestBody CategoryProductDto dto) throws Exception {
-        CategoryProduct data = service.getById(dto.getId());
-//        if (paciente == null) {
-//            throw new ResourceNotFound("Paciente", "id", pacienteDto.getPaciente_id());
-//        }
-        return new ResponseEntity<>(mapFromEntityToDto(service.update(data)), HttpStatus.OK);
+        if (service.getById(dto.getId()) == null) {
+            throw new ResourceNotFound("Categoria Producto", "id", String.valueOf(dto.getId()));
+        }
+        return new ResponseEntity<>(mapFromEntityToDto(service.update(mapFromDtoRequestToEntity(dto))), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteData(@PathVariable(value = "id") Long id) throws Exception {
-        CategoryProduct data = service.getById(id);
-//        if (paciente == null) {
-//            throw new ResourceNotFound("Paciente", "id", paciente_id);
-//        }
+    public ResponseEntity<SuccessMessageDto> deleteData(@PathVariable(value = "id") Long id) throws Exception {
+        if (service.getById(id) == null) {
+            throw new ResourceNotFound("Categoria Producto", "id", String.valueOf(id));
+        }
         service.delete(id);
+        return new ResponseEntity<>(SuccessMessageDto.builder().statusCode(HttpStatus.OK.value()).timestamp(LocalDateTime.now())
+                .message("Registro eliminado exitosamente.").build(), HttpStatus.OK);
     }
 }

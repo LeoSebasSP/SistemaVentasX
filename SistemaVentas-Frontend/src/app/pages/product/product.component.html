@@ -1,82 +1,158 @@
 <div>
     <p-toast></p-toast>
-    <p-toolbar styleClass="mb-2 gap-2">
-        <ng-template pTemplate="left">
-            <button pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-success mr-2"
-                (click)="openNew()"></button>
-            <button pButton pRipple label="Desactivar" icon="pi pi-ban" class="p-button-secondary"
-                (click)="deleteSelectedProducts()" [disabled]="!selectedProducts || !selectedProducts.length"></button>
-        </ng-template>
+    <p-tabView>
+        <p-tabPanel header="Habilitados">
+            <p-toolbar styleClass="mb-2 gap-2">
+                <ng-template pTemplate="left">
+                    <button pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-success mr-2"
+                        (click)="openNew()"></button>
+                    @if (products.length>3000) {
+                        <button pButton pRipple label="Desactivar" icon="pi pi-ban" class="p-button-secondary"
+                        (click)="disableSelectedProducts()" [disabled]="!selectedProducts || !selectedProducts.length"></button>
+                    }
+                    
+                </ng-template>
+        
+                <ng-template pTemplate="right">
+                    <button pButton pRipple label="Importar" icon="pi pi-download" class="p-button-primary mr-2"
+                        (click)="openDialogImportExcel()"></button>
+                    <button pButton pRipple label="Exportar" icon="pi pi-upload" class="p-button-help" (click)="exportProductsEnabled()"></button>
+                </ng-template>
+            </p-toolbar>
+        
+            <p-table #dt [value]="products" styleClass="p-datatable-sm" [rows]="sizePageEnabled" [paginator]="true"
+            currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} datos."
+            [showCurrentPageReport]="true"
+            [globalFilterFields]="[
+              'name',
+              'code',
+              'categoryProduct.name',
+              'measureUnit.name'
+            ]" 
+            [tableStyle]="{ 'min-width': '75rem' }" [(selection)]="selectedProducts" [rowHover]="true"
+                dataKey="id" [scrollable]="true" scrollHeight="400px">
+                <ng-template pTemplate="caption">
+                    <div class="flex align-items-center justify-content-between">
+                        <h5 class="m-0">Mantenimiento de Productos</h5>
+                        <span class="p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input class="p-inputtext" type="text" (input)="applyFilterGlobal($event, 'contains')"
+                                placeholder="Buscar..." />
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        @if (products.length>3000) {
+                            <th style="padding-left: 1rem; width: 4rem">
+                                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                            </th>
+                        }
+                        <th style="min-width: 15rem">Codigo</th>
+                        <th style="min-width: 15rem">Nombre</th>
+                        <th style="min-width: 10rem">Categoria</th>
+                        <th style="min-width: 10rem">Unidad Medida</th>
+                        <th style="min-width: 10rem">Price</th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-product>
+                    <tr>
+                        <td style="padding: 5px; padding-left: 1rem;">
+                            <p-tableCheckbox [value]="product"></p-tableCheckbox>
+                        </td>
+                        <td style="padding: 5px;">{{ product.code }}</td>
+                        <td style="padding: 5px;">{{ product.name }}</td>
+                        <td style="padding: 5px;">{{ product.categoryProduct.name }}</td>
+                        <td style="padding: 5px;">{{ product.measureUnit.name }}</td>
+                        <td style="padding: 5px;">{{ product.sellingPriceSoles | currency : "S/" }}</td>
+                        <td style="padding: 5px;">
+                            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2"
+                                (click)="editProduct(product)"></button>
+                            <button pButton pRipple icon="pi pi-ban" class="p-button-rounded p-button-secondary"
+                                (click)="disableProduct(product)"></button>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            <!-- <div class="card flex justify-content-center">
+                <p-paginator (onPageChange)="onPageChangeEnabled($event)" [first]="firstElementIndexPageEnabled" [rows]="sizePageEnabled" [totalRecords]="totalElementsPaginatorEnabled"></p-paginator>
+            </div> -->
+        </p-tabPanel>
+        <p-tabPanel header="Deshabilitados">
+            <p-toolbar styleClass="mb-2 gap-2">
+                <ng-template pTemplate="left">
+                    <button pButton pRipple label="Activar" icon="pi pi-check-circle" class="p-button-success"
+                        (click)="enableSelectedProducts()" [disabled]="!selectedProductsDisable || !selectedProductsDisable.length"></button>
+                </ng-template>
 
-        <ng-template pTemplate="right">
-            <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Importar" chooseLabel="Importar"
-                class="mr-2 inline-block"></p-fileUpload>
-            <button pButton pRipple label="Exportar" icon="pi pi-upload" class="p-button-help"></button>
-        </ng-template>
-    </p-toolbar>
-
-    <p-table #dt [value]="products" [rows]="10" [paginator]="true" [globalFilterFields]="[
-      'name',
-      'country.name',
-      'representative.name',
-      'status'
-    ]" [tableStyle]="{ 'min-width': '75rem' }" [(selection)]="selectedProducts" [rowHover]="true"
-        dataKey="id" currentPageReportTemplate="Mostrando {first} al {last} de {totalRecords} datos."
-        [showCurrentPageReport]="true" [scrollable]="true" scrollHeight="400px">
-        <ng-template pTemplate="caption">
-            <div class="flex align-items-center justify-content-between">
-                <h5 class="m-0">Mantenimiento de Productos</h5>
-                <span class="p-input-icon-left">
-                    <i class="pi pi-search"></i>
-                    <input class="p-inputtext" type="text" (input)="applyFilterGlobal($event, 'contains')"
-                        placeholder="Buscar..." />
-                </span>
-            </div>
-        </ng-template>
-        <ng-template pTemplate="header">
-            <tr>
-                <th style="width: 4rem">
-                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-                </th>
-                <th style="min-width: 15rem">Codigo</th>
-                <th style="min-width: 15rem">Nombre</th>
-                <!-- <th>Image</th> -->
-                <th style="min-width: 10rem">Categoria</th>
-                <th style="min-width: 10rem">Unidad Medida</th>
-                <th style="min-width: 10rem">Price</th>
-                <th></th>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-product>
-            <tr>
-                <td style="padding: 5px; padding-left: 1rem;">
-                    <p-tableCheckbox [value]="product"></p-tableCheckbox>
-                </td>
-                <td style="padding: 5px;">{{ product.code }}</td>
-                <td style="padding: 5px;">{{ product.name }}</td>
-                <td style="padding: 5px;">{{ product.categoryProduct.name }}</td>
-                <td style="padding: 5px;">{{ product.measureUnit.name }}</td>
-                <!-- <td><img [src]="'https://primefaces.org/cdn/primeng/images/demo/product/' + product.image" [alt]="product.name" width="50" class="shadow-4" /></td> -->
-                <td style="padding: 5px;">{{ product.sellingPriceSoles | currency : "S/" }}</td>
-                <td style="padding: 5px;">
-                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"
-                        (click)="editProduct(product)"></button>
-                    <button pButton pRipple icon="pi pi-ban" class="p-button-rounded p-button-secondary"
-                        (click)="deleteProduct(product)"></button>
-                </td>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="summary">
-            <div class="flex align-items-center justify-content-between">
-                En total hay {{ products ? products.length : 0 }} productos.
-            </div>
-        </ng-template>
-    </p-table>
+                <ng-template pTemplate="right">
+                    <button pButton pRipple label="Exportar" icon="pi pi-upload" class="p-button-help" (click)="exportProductsDisabled()"></button>
+                </ng-template>
+            </p-toolbar>
+            <p-table #dt [value]="productsDisable" [rows]="sizePageDisabled" [paginator]="true"
+            currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} datos."
+            [showCurrentPageReport]="true"
+            [globalFilterFields]="[
+              'name',
+              'code',
+              'categoryProduct',
+              'measureUnit'
+            ]" 
+            [tableStyle]="{ 'min-width': '75rem' }" [(selection)]="selectedProductsDisable" [rowHover]="true"
+                dataKey="id" [scrollable]="true" scrollHeight="400px">
+                <ng-template pTemplate="caption">
+                    <div class="flex align-items-center justify-content-between">
+                        <h5 class="m-0">Mantenimiento de Productos Deshabilitados</h5>
+                        <span class="p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input class="p-inputtext" type="text" (input)="applyFilterGlobal($event, 'contains')"
+                                placeholder="Buscar..." />
+                        </span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 4rem">
+                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        </th>
+                        <th style="min-width: 15rem">Codigo</th>
+                        <th style="min-width: 15rem">Nombre</th>
+                        <th style="min-width: 10rem">Categoria</th>
+                        <th style="min-width: 10rem">Unidad Medida</th>
+                        <th style="min-width: 10rem">Price</th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-productDisable>
+                    <tr>
+                        <td style="padding: 5px; padding-left: 1rem;">
+                            <p-tableCheckbox [value]="productDisable"></p-tableCheckbox>
+                        </td>
+                        <td style="padding: 5px;">{{ productDisable.code }}</td>
+                        <td style="padding: 5px;">{{ productDisable.name }}</td>
+                        <td style="padding: 5px;">{{ productDisable.categoryProduct.name }}</td>
+                        <td style="padding: 5px;">{{ productDisable.measureUnit.name }}</td>
+                        <td style="padding: 5px;">{{ productDisable.sellingPriceSoles | currency : "S/" }}</td>
+                        <td style="padding: 5px;">
+                            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2"
+                                (click)="editProduct(productDisable)"></button>
+                            <button pButton pRipple icon="pi pi-check-circle" class="p-button-rounded p-button-success"
+                                (click)="enableProduct(productDisable)"></button>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            <!-- <div class="card flex justify-content-center">
+                <p-paginator (onPageChange)="onPageChangeDisabled($event)" [rows]="sizePageDisabled" [totalRecords]="totalElementsPaginatorDisabled"></p-paginator>
+            </div> -->
+        </p-tabPanel>
+    </p-tabView>
+    
 </div>
 <p-dialog [(visible)]="productDialog" [style]="{ width: '80vw', height: '750px' }" header="Nuevo Producto"
     [modal]="true" styleClass="p-fluid">
     <ng-template pTemplate="content">
-        <!-- <img [src]="'https://primefaces.org/cdn/primeng/images/demo/product/' + product.image" [alt]="product.image" class="block m-auto pb-3" *ngIf="product.image" /> -->
         <p-tabView>
             <p-tabPanel header="Principal">
                 <div class="card flex flex-column md:flex-row">
@@ -85,7 +161,7 @@
                             <label for="code" class="block text-900 font-medium mb-2">Codigo*</label>
                             <input class="w-full mb-3 p-inputtext" placeholder="Codigo" type="text" id="code"
                                 [(ngModel)]="product.code" required autofocus />
-                            <small class="p-error" *ngIf="submitted && !product.name">Ingrese un codigo.</small>
+                            <small class="p-error" *ngIf="submittedProduct && !product.name">Ingrese un codigo.</small>
                         </div>
                         <div class="field">
                             <label for="codeAux" class="block text-900 font-medium mb-2">Codigo Secundario</label>
@@ -102,7 +178,7 @@
                             <label for="name" class="block text-900 font-medium mb-2">Nombre*</label>
                             <input class="w-full mb-3 p-inputtext" placeholder="Nombre" type="text" id="name"
                                 [(ngModel)]="product.name" required />
-                            <small class="p-error" *ngIf="submitted && !product.name">Ingrese un nombre.</small>
+                            <small class="p-error" *ngIf="submittedProduct && !product.name">Ingrese un nombre.</small>
                         </div>
                         <div class="field">
                             <label for="description" class="block text-900 font-medium mb-2">Description</label>
@@ -116,8 +192,8 @@
                         <label for="measureUnit" class="block text-900 font-medium mb-2">Unidad Medida*</label>
                         <p-listbox id="measureUnit" [options]="listMeasureUnit" [(ngModel)]="selectedMeasureUnit"
                             optionLabel="name" [filter]="true" [style]="{ width: '15rem' }"
-                            [listStyle]="{ 'max-height': '220px' }" (onChange)="showMeasureUnitSelected()"></p-listbox>
-                        <small class="p-error" *ngIf="submitted && !selectedMeasureUnit">Selecciona una Unidad
+                            [listStyle]="{ 'max-height': '220px' }"></p-listbox>
+                        <small class="p-error" *ngIf="submittedProduct && !selectedMeasureUnit">Selecciona una Unidad
                             Medida.</small>
                     </div>
                 </div>
@@ -129,22 +205,22 @@
                         <p-listbox id="group" [options]="listGroupProduct" [(ngModel)]="selectedGroupProduct"
                             optionLabel="name" [filter]="true" [style]="{ width: '15rem' }"
                             [listStyle]="{ 'max-height': '220px' }" (onChange)="listCategories()"></p-listbox>
-                        <small class="p-error" *ngIf="submitted && !selectedGroupProduct">Selecciona un Grupo.</small>
+                        <small class="p-error" *ngIf="submittedProduct && !selectedGroupProduct">Selecciona un Grupo.</small>
                     </div>
                     <div class="mr-5 mb-5">
                         <label for="category" class="block text-900 font-medium mb-2">Categoria*</label>
                         <p-listbox id="category" [options]="listCategoryProduct" [(ngModel)]="selectedCategoryProduct"
                             optionLabel="name" [filter]="true" [style]="{ width: '15rem' }"
                             [listStyle]="{ 'max-height': '220px' }" (onChange)="listTypes()"></p-listbox>
-                        <small class="p-error" *ngIf="submitted && !selectedCategoryProduct">Selecciona una
+                        <small class="p-error" *ngIf="submittedProduct && !selectedCategoryProduct">Selecciona una
                             Categoria.</small>
                     </div>
                     <div class="mr-5 mb-5">
                         <label for="type" class="block text-900 font-medium mb-2">Tipo*</label>
                         <p-listbox id="type" [options]="listTypeProduct" [(ngModel)]="selectedTypeProduct"
                             optionLabel="name" [filter]="true" [style]="{ width: '15rem' }"
-                            [listStyle]="{ 'max-height': '220px' }" (onChange)="showSelected()"></p-listbox>
-                        <small class="p-error" *ngIf="submitted && !selectedTypeProduct">Selecciona un Tipo.</small>
+                            [listStyle]="{ 'max-height': '220px' }" ></p-listbox>
+                        <small class="p-error" *ngIf="submittedProduct && !selectedTypeProduct">Selecciona un Tipo.</small>
                     </div>
                 </div>
                 <div class="card flex justify-content-center" style="flex-wrap: wrap">
@@ -152,8 +228,8 @@
                         <label for="brand" class="block text-900 font-medium mb-2">Marca*</label>
                         <p-listbox id="brand" [options]="listBrandProduct" [(ngModel)]="selectedBrandProduct"
                             optionLabel="name" [filter]="true" [style]="{ width: '15rem' }"
-                            [listStyle]="{ 'max-height': '220px' }" (onChange)="showBrandSelected()"></p-listbox>
-                        <small class="p-error" *ngIf="submitted && !selectedBrandProduct">Selecciona una Marca.</small>
+                            [listStyle]="{ 'max-height': '220px' }" ></p-listbox>
+                        <small class="p-error" *ngIf="submittedProduct && !selectedBrandProduct">Selecciona una Marca.</small>
                     </div>
                 </div>
             </p-tabPanel>
@@ -197,63 +273,35 @@
             </p-tabPanel>
 
             <p-tabPanel header="+Info">
-                <p>
-                    At vero eos et accusamus et iusto odio dignissimos ducimus qui
-                    blanditiis praesentium voluptatum deleniti atque corrupti quos dolores
-                    et quas molestias excepturi sint occaecati cupiditate non provident,
-                    similique sunt in culpa qui officia deserunt mollitia animi, id est
-                    laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita
-                    distinctio. Nam libero tempore, cum soluta nobis est eligendi optio
-                    cumque nihil impedit quo minus.
-                </p>
+                <div class="card flex flex-column md:flex-row">
+                    <div class="w-full">
+                        <div class="flex-auto">
+                            <label class="block font-bold mb-2" for="locale-us">Stock Minimo</label>
+                            <p-inputNumber [(ngModel)]="product.minimumStock" inputId="locale-us" mode="decimal" locale="en-US" [minFractionDigits]="0"> </p-inputNumber>
+                        </div>  
+                    </div>
+                </div>
             </p-tabPanel>
         </p-tabView>
-
-        <!-- <div class="field">
-          <label for="inventoryStatus">Inventory Status</label>
-          <p-dropdown [(ngModel)]="product.inventoryStatus" inputId="inventoryStatus" [options]="statuses">
-              <ng-template pTemplate="selectedItem">
-                  <p-tag [value]="product.inventoryStatus.toUpperCase()" [severity]="getSeverity(product.inventoryStatus.toUpperCase())"></p-tag>
-              </ng-template>
-              <ng-template let-option pTemplate="item">
-                  <p-tag [value]="option.label" [severity]="getSeverity(option.label)"></p-tag>
-              </ng-template>
-          </p-dropdown>
-      </div> -->
-
-        <!-- <div class="field">
-          <label class="mb-3">Category</label>
-          <div class="formgrid grid">
-              <div class="field-radiobutton col-6">
-                  <p-radioButton id="category1" name="category" value="Accessories" [(ngModel)]="product.categoryProduct"></p-radioButton>
-                  <label for="category1">Accessories</label>
-              </div>
-              <div class="field-radiobutton col-6">
-                  <p-radioButton id="category2" name="category" value="Clothing" [(ngModel)]="product.categoryProduct"></p-radioButton>
-                  <label for="category2">Clothing</label>
-              </div>
-              <div class="field-radiobutton col-6">
-                  <p-radioButton id="category3" name="category" value="Electronics" [(ngModel)]="product.categoryProduct"></p-radioButton>
-                  <label for="category3">Electronics</label>
-              </div>
-              <div class="field-radiobutton col-6">
-                  <p-radioButton id="category4" name="category" value="Fitness" [(ngModel)]="product.categoryProduct"></p-radioButton>
-                  <label for="category4">Fitness</label>
-              </div>
-          </div>
-      </div> -->
-
-        <div class="formgrid grid">
-            <!-- <div class="field col">
-              <label for="quantity">Quantity</label>
-              <p-inputNumber id="quantity" [(ngModel)]="product.quantity"></p-inputNumber>
-          </div> -->
-        </div>
     </ng-template>
 
     <ng-template pTemplate="footer">
         <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
         <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveProduct()"></button>
+    </ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="importExcelDialog" [style]="{ width: '50vw', height: '450px' }" header="Importar Nuevos Productos" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="card flex justify-content-center">
+            <p-fileUpload name="demo[]" url="https://www.primefaces.org/cdn/api/upload.php" (onUpload)="onUpload($event)" [multiple]="true" accept=".xlsx" [fileLimit]="1" [maxFileSize]="1000000">
+                
+            </p-fileUpload>
+        </div>
+    </ng-template>
+    
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
     </ng-template>
 </p-dialog>
 

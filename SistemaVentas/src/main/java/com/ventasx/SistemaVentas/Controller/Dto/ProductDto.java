@@ -49,7 +49,7 @@ public class ProductDto {
     private BrandProductDto brandProduct;
 
     @NotNull(message = "{product.measureUnit.notNull}")
-    private BrandProductDto measureUnit;
+    private MeasureUnitDto measureUnit;
 
     private Long parentProduct;
     private Float minimumStock;
@@ -59,6 +59,7 @@ public class ProductDto {
     private Float previousSellingPriceDollars;
     private String sunatType;
     private Boolean isEnabled;
+
     private LocalDateTime creationDate;
     private LocalDateTime updateDate;
     private Long userCreatorId;

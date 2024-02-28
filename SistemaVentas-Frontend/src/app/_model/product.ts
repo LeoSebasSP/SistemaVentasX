@@ -1,7 +1,7 @@
-import { MeasureUnitComponent } from "../pages/measure-unit/measure-unit.component";
 import { BrandProduct } from "./brandProduct";
 import { CategoryProduct } from "./categoryProduct";
 import { GroupProduct } from "./groupProduct";
+import { MeasureUnit } from "./measureUnit";
 import { TypeProduct } from "./typeProduct";
 
 export class Product{
@@ -14,7 +14,7 @@ export class Product{
   categoryProduct!: CategoryProduct;
   typeProduct!: TypeProduct;
   brandProduct!: BrandProduct;
-  measureUnit!: MeasureUnitComponent;
+  measureUnit!: MeasureUnit;
   parentProduct!: bigint;
   minimumStock!: number;
   sellingPriceSoles!: number;

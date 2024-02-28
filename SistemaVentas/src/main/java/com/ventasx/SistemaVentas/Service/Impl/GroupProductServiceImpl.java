@@ -19,9 +19,4 @@ public class GroupProductServiceImpl extends CrudServiceImpl<GroupProduct, Long>
     protected IGenericRepository<GroupProduct, Long> getRepo() {
         return repository;
     }
-
-    @Override
-    public List<GroupProduct> findAllByIsEnabledTrue() {
-        return repository.findAllByIsEnabledTrue();
-    }
 }

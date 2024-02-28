@@ -1,19 +1,18 @@
-package com.ventasx.SistemaVentas.Exception;
+package com.ventasx.SistemaVentas.Controller.Dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ErrorMessageDto {
+@Builder
+public class SuccessMessageDto {
     private Integer statusCode;
-    private Date timestamp;
+    private LocalDateTime timestamp;
     private String message;
-    private String description;
 }

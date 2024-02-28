@@ -18,4 +18,12 @@ public interface ICrudService<T, ID> {
     T update(T t) throws Exception;
 
     void delete(ID id) throws Exception;
+
+    Page<T> findAllByIsEnabledTrueOrderByCreationDateDescPagination(Pageable pageable);
+
+    Page<T> findAllByIsEnabledFalseOrderByCreationDateDescPagination(Pageable pageable);
+
+    List<T> findAllByIsEnabledTrueOrderByCreationDateDesc();
+
+    List<T> findAllByIsEnabledFalseOrderByCreationDateDesc();
 }

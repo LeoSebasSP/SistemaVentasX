@@ -22,11 +22,6 @@ public class CategoryProductServiceImpl extends CrudServiceImpl<CategoryProduct,
     }
 
     @Override
-    public List<CategoryProduct> findAllByIsEnabledTrue() {
-        return repository.findAllByIsEnabledTrue();
-    }
-
-    @Override
     public List<CategoryProduct> findAllByGroupProductAndIsEnabledTrue(GroupProduct groupProduct) {
         return repository.findAllByGroupProductAndIsEnabledTrue(groupProduct);
     }

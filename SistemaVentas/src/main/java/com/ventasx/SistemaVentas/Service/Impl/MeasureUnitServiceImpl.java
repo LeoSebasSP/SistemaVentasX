@@ -19,9 +19,4 @@ public class MeasureUnitServiceImpl extends CrudServiceImpl<MeasureUnit, Integer
     protected IGenericRepository<MeasureUnit, Integer> getRepo() {
         return repository;
     }
-
-    @Override
-    public List<MeasureUnit> findAllByIsEnabledTrue() {
-        return repository.findAllByIsEnabledTrue();
-    }
 }

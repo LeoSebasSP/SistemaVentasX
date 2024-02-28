@@ -14,18 +14,26 @@ export class GenericService<T> {
     @Inject('url') protected url: string
   ) {}
 
-  listarPagination(p:number, s:number) {
+  // listarPagination(p:number, s:number) {
+  //   return this.loginService.getAuthTokenHeaders().pipe(
+  //     switchMap(headers => {
+  //       return this.http.get<any>(`${this.url}/pagination/?page=${p}&size=${s}`, {headers});
+  //     })
+  //   )
+  // }
+
+  findAllEnabledTrueOrderDesc() {
     return this.loginService.getAuthTokenHeaders().pipe(
       switchMap(headers => {
-        return this.http.get<any>(`${this.url}/pagination/?page=${p}&size=${s}`, {headers});
+        return this.http.get<T[]>(`${this.url}`, {headers});
       })
     )
   }
 
-  listar() {
+  findAllEnabledFalseOrderDesc() {
     return this.loginService.getAuthTokenHeaders().pipe(
       switchMap(headers => {
-        return this.http.get<T[]>(`${this.url}`, {headers});
+        return this.http.get<T[]>(`${this.url}/disabled`, {headers});
       })
     )
   }
@@ -58,6 +66,30 @@ export class GenericService<T> {
     return this.loginService.getAuthTokenHeaders().pipe(
       switchMap(headers => {
         return this.http.delete(`${this.url}/${id}`, {headers});
+      })
+    )
+  }
+
+  findAllEnabledTrueOrderDescPagination(p:number, s:number) {
+    return this.loginService.getAuthTokenHeaders().pipe(
+      switchMap(headers => {
+        return this.http.get<any>(`${this.url}/pagination?page=${p}&size=${s}`, {headers});
+      })
+    )
+  }
+
+  findAllEnabledFalseOrderDescPagination(p:number, s:number) {
+    return this.loginService.getAuthTokenHeaders().pipe(
+      switchMap(headers => {
+        return this.http.get<any>(`${this.url}/pagination-disabled?page=${p}&size=${s}`, {headers});
+      })
+    )
+  }
+
+  findAllEnabledTrue() {
+    return this.loginService.getAuthTokenHeaders().pipe(
+      switchMap(headers => {
+        return this.http.get<T[]>(`${this.url}`, {headers});
       })
     )
   }
