@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { ConfirmationService, FilterService, MessageService } from 'primeng/api';
+import { ConfirmationService, FilterMatchMode, FilterService, MessageService, SelectItem } from 'primeng/api';
 import { Product } from '../../_model/product';
 import { ProductService } from '../../_services/product.service';
 import { PrimengModule } from '../../_primeng/primeng.module';
@@ -44,9 +44,10 @@ export class ProductComponent {
     productsDisable!: Product[];
     product!: Product;
     productDisable!: Product;
-    selectedProducts!: Product[] | null;
-    selectedProductsDisable!: Product[] | null;
     submittedProduct: boolean = false;
+
+    productSelected!: Product;
+    productDisabledSelected!: Product;
 
     listGroupProduct!: GroupProduct[];
     selectedGroupProduct!: GroupProduct | null;
@@ -63,14 +64,12 @@ export class ProductComponent {
     listMeasureUnit!: MeasureUnit[];
     selectedMeasureUnit!: MeasureUnit | null;
 
-    listIdSelected: bigint[] = [];
-
     firstElementIndexPageEnabled: number = 0;
-    sizePageEnabled: number = 5;
+    sizePageEnabled: number = 10;
     numberPageEnabled: number = 0;
     totalElementsPaginatorEnabled!: number;
 
-    sizePageDisabled: number = 5;
+    sizePageDisabled: number = 10;
     numberPageDisabled: number = 0;
     totalElementsPaginatorDisabled!: number;
 
@@ -97,7 +96,6 @@ export class ProductComponent {
     }
 
     ngOnInit() {
-      this.filterService.filter(this.listBrandProduct, this.listCategoryProduct, null, 'null', 'PE');
       this.productService.findAllEnabledTrueOrderDesc().subscribe(data => {this.products = data; this.showOptDisabled = this.products.length<=3000 ? true : false;});
       this.productService.findAllEnabledFalseOrderDesc().subscribe(data => {this.productsDisable = data; this.showOptEnabled = this.productsDisable.length<=3000 ? true : false;});
 
@@ -163,7 +161,7 @@ export class ProductComponent {
 
     openNew() {
         this.product = new Product();
-        this.selectedGroupProduct = null;
+        this.selectedGroupProduct= null;
         this.selectedMeasureUnit = null;
         this.selectedCategoryProduct = null;
         this.selectedTypeProduct = null;
@@ -173,61 +171,15 @@ export class ProductComponent {
         this.productDialog = true;
     }
 
-    disableSelectedProducts() {
-        this.listIdSelected = [];
-        if (this.selectedProducts !=null) {
-            this.selectedProducts.forEach(product => {
-                this.listIdSelected.push(product.id);
-            });
-            this.confirmationService.confirm({
-                message: '¿Estás seguro de deshabilitar los productos seleccionados?',
-                header: 'Confirm',
-                icon: 'pi pi-exclamation-triangle',
-                accept: () => {
-                    this.productService.disableProducts(this.listIdSelected).subscribe((data)=>{
-                        this.selectedProducts = null;
-                        this.messageService.add({ severity: 'success', summary: 'Exitoso', detail: 'Productos Deshabilitados', life: 3000 });
-                        this.productService.findAllEnabledTrueOrderDesc().subscribe(data => {this.products = data; this.showOptDisabled = this.products.length<=3000 ? true : false;});
-                        this.productService.findAllEnabledFalseOrderDesc().subscribe(data => {this.productsDisable = data; this.showOptEnabled = this.productsDisable.length<=3000 ? true : false;});
-                    });
-                }
-            });
-        }
-    }
-
     disableProduct(product: Product | null) {
         if (product != null) {
-            this.listIdSelected = [];
-            this.listIdSelected.push(product.id);
             this.confirmationService.confirm({
                 message: '¿Estás seguro de deshabilitar el producto: ' + product.name + '?',
                 header: 'Confirm',
                 icon: 'pi pi-exclamation-triangle',
                 accept: () => {
-                    this.productService.disableProducts(this.listIdSelected).subscribe((data)=>{
+                    this.productService.disableProducts(product.id).subscribe((data)=>{
                         this.messageService.add({ severity: 'success', summary: 'Exitoso', detail: 'Producto Deshabilitado', life: 3000 });
-                        this.productService.findAllEnabledTrueOrderDesc().subscribe(data => {this.products = data; this.showOptDisabled = this.products.length<=3000 ? true : false;});
-                        this.productService.findAllEnabledFalseOrderDesc().subscribe(data => {this.productsDisable = data; this.showOptEnabled = this.productsDisable.length<=3000 ? true : false;});
-                    });
-                }
-            });
-        }
-    }
-
-    enableSelectedProducts() {
-        this.listIdSelected = [];
-        if (this.selectedProductsDisable !=null) {
-            this.selectedProductsDisable.forEach(product => {
-                this.listIdSelected.push(product.id);
-            });
-            this.confirmationService.confirm({
-                message: '¿Estás seguro de habilitar los productos seleccionados?',
-                header: 'Confirm',
-                icon: 'pi pi-exclamation-triangle',
-                accept: () => {
-                    this.productService.enableProducts(this.listIdSelected).subscribe((data)=>{
-                        this.selectedProductsDisable = null;
-                        this.messageService.add({ severity: 'success', summary: 'Exitoso', detail: 'Productos Habilitados', life: 3000 });
                         this.productService.findAllEnabledTrueOrderDesc().subscribe(data => {this.products = data; this.showOptDisabled = this.products.length<=3000 ? true : false;});
                         this.productService.findAllEnabledFalseOrderDesc().subscribe(data => {this.productsDisable = data; this.showOptEnabled = this.productsDisable.length<=3000 ? true : false;});
                     });
@@ -238,14 +190,12 @@ export class ProductComponent {
 
     enableProduct(product: Product | null) {
         if (product != null) {
-            this.listIdSelected = [];
-            this.listIdSelected.push(product.id);
             this.confirmationService.confirm({
                 message: '¿Estás seguro de habilitar el producto: ' + product.name + '?',
                 header: 'Confirm',
                 icon: 'pi pi-exclamation-triangle',
                 accept: () => {
-                    this.productService.enableProducts(this.listIdSelected).subscribe((data)=>{
+                    this.productService.enableProducts(product.id).subscribe((data)=>{
                         this.messageService.add({ severity: 'success', summary: 'Exitoso', detail: 'Producto Habilitado', life: 3000 });
                         this.productService.findAllEnabledTrueOrderDesc().subscribe(data => {this.products = data; this.showOptDisabled = this.products.length<=3000 ? true : false;});
                         this.productService.findAllEnabledFalseOrderDesc().subscribe(data => {this.productsDisable = data; this.showOptEnabled = this.productsDisable.length<=3000 ? true : false;});
@@ -341,5 +291,21 @@ export class ProductComponent {
         }, error => {
             console.log(error);
         });
+    }
+
+    onRowSelect(event: any) {
+      this.messageService.add({ severity: 'info', summary: 'Product Selected', detail: event.data.name });
+    }
+
+    onRowUnselect(event: any) {
+        this.messageService.add({ severity: 'info', summary: 'Product Unselected', detail: event.data.name });
+    }
+
+    filterByCode(event: any){
+      this.dt?.filter(event.target.value, 'code','contains');
+    }
+
+    filterByName(event: any){
+      this.dt?.filter(event.target.value, 'name','contains');
     }
 }

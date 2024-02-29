@@ -104,25 +104,21 @@ public class ProductController extends MapperBetweenDtoAndEntity<ProductDto, Pro
     }
 
     @PutMapping("/disable")
-    public ResponseEntity<SuccessMessageDto> disableData(@RequestBody List<Long> listId) throws Exception {
-        for (Long id: listId){
-            if (service.getById(id) == null){
-                throw new ResourceNotFound("Producto", "id", String.valueOf(id));
-            }
-            service.disableProductsById(id);
+    public ResponseEntity<SuccessMessageDto> disableData(@RequestBody Long id) throws Exception {
+        if (service.getById(id) == null){
+            throw new ResourceNotFound("Producto", "id", String.valueOf(id));
         }
+        service.disableProductsById(id);
         return new ResponseEntity<>(SuccessMessageDto.builder().statusCode(HttpStatus.OK.value()).timestamp(LocalDateTime.now())
-                .message("Registros deshabilitados exitosamente.").build(), HttpStatus.OK);
+                .message("Registro deshabilitado exitosamente.").build(), HttpStatus.OK);
     }
 
     @PutMapping("/enable")
-    public ResponseEntity<SuccessMessageDto> enableData(@RequestBody List<Long> listId) throws Exception {
-        for (Long id: listId){
-            if (service.getById(id) == null){
-                throw new ResourceNotFound("Producto", "id", String.valueOf(id));
-            }
-            service.enableProductById(id);
+    public ResponseEntity<SuccessMessageDto> enableData(@RequestBody Long id) throws Exception {
+        if (service.getById(id) == null){
+            throw new ResourceNotFound("Producto", "id", String.valueOf(id));
         }
+        service.enableProductById(id);
         return new ResponseEntity<>(SuccessMessageDto.builder().statusCode(HttpStatus.OK.value()).timestamp(LocalDateTime.now())
                 .message("Registros habilitados exitosamente.").build(), HttpStatus.OK);
     }
