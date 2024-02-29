@@ -22,6 +22,7 @@ import { TabViewModule } from 'primeng/tabview';
 import { ListboxModule } from 'primeng/listbox';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { PaginatorModule } from 'primeng/paginator';
+import { MultiSelectModule } from 'primeng/multiselect';
 
 @NgModule({
   declarations: [],
@@ -50,7 +51,8 @@ import { PaginatorModule } from 'primeng/paginator';
     TabViewModule,
     ListboxModule,
     InputNumberModule,
-    PaginatorModule
+    PaginatorModule,
+    MultiSelectModule
   ]
 })
 export class PrimengModule { }

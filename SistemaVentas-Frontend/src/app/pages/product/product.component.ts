@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService, FilterService, MessageService } from 'primeng/api';
 import { Product } from '../../_model/product';
 import { ProductService } from '../../_services/product.service';
 import { PrimengModule } from '../../_primeng/primeng.module';
@@ -50,13 +50,13 @@ export class ProductComponent {
 
     listGroupProduct!: GroupProduct[];
     selectedGroupProduct!: GroupProduct | null;
-    
+
     listCategoryProduct!: CategoryProduct[];
     selectedCategoryProduct!: CategoryProduct | null;
-    
+
     listTypeProduct!: TypeProduct[];
     selectedTypeProduct!: TypeProduct | null;
-    
+
     listBrandProduct!: BrandProduct[];
     selectedBrandProduct!: BrandProduct | null;
 
@@ -71,11 +71,16 @@ export class ProductComponent {
     totalElementsPaginatorEnabled!: number;
 
     sizePageDisabled: number = 5;
-    numberPageDisabled: number = 0;    
+    numberPageDisabled: number = 0;
     totalElementsPaginatorDisabled!: number;
 
+    showOptDisabled: boolean = true;
+    showOptEnabled: boolean = true;
+
+    listCategoriesFilter!: CategoryProduct[];
+
     @ViewChild('dt') dt: Table | undefined;
-    
+
     constructor(
         private productService: ProductService,
         private groupProductService: GroupProductService,
@@ -86,17 +91,21 @@ export class ProductComponent {
         private brandProductService: BrandProductService,
         private measureUnitService: MeasureUnitService,
         private dataImportService: DataImportService,
-        private dataExportService: DataExportService
+        private dataExportService: DataExportService,
+        private filterService: FilterService
         ){
     }
 
     ngOnInit() {
-        this.productService.findAllEnabledTrueOrderDesc().subscribe(data => (this.products = data));
-        this.productService.findAllEnabledFalseOrderDesc().subscribe(data => (this.productsDisable = data));
+      this.filterService.filter(this.listBrandProduct, this.listCategoryProduct, null, 'null', 'PE');
+      this.productService.findAllEnabledTrueOrderDesc().subscribe(data => {this.products = data; this.showOptDisabled = this.products.length<=3000 ? true : false;});
+      this.productService.findAllEnabledFalseOrderDesc().subscribe(data => {this.productsDisable = data; this.showOptEnabled = this.productsDisable.length<=3000 ? true : false;});
 
-        this.groupProductService.findAllEnabledTrue().subscribe((data) => (this.listGroupProduct = data));
-        this.brandProductService.findAllEnabledTrue().subscribe((data) => (this.listBrandProduct = data));
-        this.measureUnitService.findAllEnabledTrue().subscribe((data) => (this.listMeasureUnit = data));
+      this.groupProductService.findAllEnabledTrueOrderDesc().subscribe((data) => (this.listGroupProduct = data));
+      this.brandProductService.findAllEnabledTrueOrderDesc().subscribe((data) => (this.listBrandProduct = data));
+      this.measureUnitService.findAllEnabledTrueOrderDesc().subscribe((data) => (this.listMeasureUnit = data));
+
+      this.categoryProductService.findAllEnabledTrueOrderDesc().subscribe(data => (this.listCategoriesFilter = data));
     }
 
     // initListProductsEnabled(page:number, size:number){
@@ -159,6 +168,7 @@ export class ProductComponent {
         this.selectedCategoryProduct = null;
         this.selectedTypeProduct = null;
         this.selectedBrandProduct = null;
+
         this.submittedProduct = false;
         this.productDialog = true;
     }
@@ -177,8 +187,8 @@ export class ProductComponent {
                     this.productService.disableProducts(this.listIdSelected).subscribe((data)=>{
                         this.selectedProducts = null;
                         this.messageService.add({ severity: 'success', summary: 'Exitoso', detail: 'Productos Deshabilitados', life: 3000 });
-                        this.productService.findAllEnabledTrueOrderDesc().subscribe(data => (this.products = data));
-                        this.productService.findAllEnabledFalseOrderDesc().subscribe(data => (this.productsDisable = data));
+                        this.productService.findAllEnabledTrueOrderDesc().subscribe(data => {this.products = data; this.showOptDisabled = this.products.length<=3000 ? true : false;});
+                        this.productService.findAllEnabledFalseOrderDesc().subscribe(data => {this.productsDisable = data; this.showOptEnabled = this.productsDisable.length<=3000 ? true : false;});
                     });
                 }
             });
@@ -196,8 +206,8 @@ export class ProductComponent {
                 accept: () => {
                     this.productService.disableProducts(this.listIdSelected).subscribe((data)=>{
                         this.messageService.add({ severity: 'success', summary: 'Exitoso', detail: 'Producto Deshabilitado', life: 3000 });
-                        this.productService.findAllEnabledTrueOrderDesc().subscribe(data => (this.products = data));
-                        this.productService.findAllEnabledFalseOrderDesc().subscribe(data => (this.productsDisable = data));
+                        this.productService.findAllEnabledTrueOrderDesc().subscribe(data => {this.products = data; this.showOptDisabled = this.products.length<=3000 ? true : false;});
+                        this.productService.findAllEnabledFalseOrderDesc().subscribe(data => {this.productsDisable = data; this.showOptEnabled = this.productsDisable.length<=3000 ? true : false;});
                     });
                 }
             });
@@ -218,8 +228,8 @@ export class ProductComponent {
                     this.productService.enableProducts(this.listIdSelected).subscribe((data)=>{
                         this.selectedProductsDisable = null;
                         this.messageService.add({ severity: 'success', summary: 'Exitoso', detail: 'Productos Habilitados', life: 3000 });
-                        this.productService.findAllEnabledTrueOrderDesc().subscribe(data => (this.products = data));
-                        this.productService.findAllEnabledFalseOrderDesc().subscribe(data => (this.productsDisable = data));
+                        this.productService.findAllEnabledTrueOrderDesc().subscribe(data => {this.products = data; this.showOptDisabled = this.products.length<=3000 ? true : false;});
+                        this.productService.findAllEnabledFalseOrderDesc().subscribe(data => {this.productsDisable = data; this.showOptEnabled = this.productsDisable.length<=3000 ? true : false;});
                     });
                 }
             });
@@ -237,8 +247,8 @@ export class ProductComponent {
                 accept: () => {
                     this.productService.enableProducts(this.listIdSelected).subscribe((data)=>{
                         this.messageService.add({ severity: 'success', summary: 'Exitoso', detail: 'Producto Habilitado', life: 3000 });
-                        this.productService.findAllEnabledTrueOrderDesc().subscribe(data => (this.products = data));
-                        this.productService.findAllEnabledFalseOrderDesc().subscribe(data => (this.productsDisable = data));
+                        this.productService.findAllEnabledTrueOrderDesc().subscribe(data => {this.products = data; this.showOptDisabled = this.products.length<=3000 ? true : false;});
+                        this.productService.findAllEnabledFalseOrderDesc().subscribe(data => {this.productsDisable = data; this.showOptEnabled = this.productsDisable.length<=3000 ? true : false;});
                     });
                 }
             });
@@ -289,13 +299,13 @@ export class ProductComponent {
                 this.productService.modificar(this.product).subscribe((data)=>{
                     this.messageService.add({ severity: 'success', summary: 'Exitoso', detail: 'Producto Actualizado', life: 3000 });
                     this.productDialog = false;
-                    this.productService.findAllEnabledTrueOrderDesc().subscribe(data => (this.products = data));
+                    this.productService.findAllEnabledTrueOrderDesc().subscribe(data => {this.products = data; this.showOptDisabled = this.products.length<=3000 ? true : false;});
                 })
             } else {
                 this.productService.registrar(this.product).subscribe((data) => {
                     this.messageService.add({ severity: 'success', summary: 'Exitoso', detail: 'Producto Creado', life: 3000 });
                     this.productDialog = false;
-                    this.productService.findAllEnabledTrueOrderDesc().subscribe(data => (this.products = data));
+                    this.productService.findAllEnabledTrueOrderDesc().subscribe(data => {this.products = data; this.showOptDisabled = this.products.length<=3000 ? true : false;});
                 })
             }
         }
@@ -309,7 +319,7 @@ export class ProductComponent {
         this.dataImportService.importProducts(event.files[0]).subscribe((data)=>{
             this.messageService.add({severity: 'success', summary: 'Exitoso', detail: 'Productos Importados'});
             this.importExcelDialog = false;
-            this.productService.findAllEnabledTrueOrderDesc().subscribe(data => (this.products = data));
+            this.productService.findAllEnabledTrueOrderDesc().subscribe(data => {this.products = data; this.showOptDisabled = this.products.length<=3000 ? true : false;});
         })
     }
 

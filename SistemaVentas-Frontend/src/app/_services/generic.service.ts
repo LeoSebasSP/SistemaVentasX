@@ -86,11 +86,4 @@ export class GenericService<T> {
     )
   }
 
-  findAllEnabledTrue() {
-    return this.loginService.getAuthTokenHeaders().pipe(
-      switchMap(headers => {
-        return this.http.get<T[]>(`${this.url}`, {headers});
-      })
-    )
-  }
 }

@@ -5,62 +5,90 @@
             <p-toolbar styleClass="mb-2 gap-2">
                 <ng-template pTemplate="left">
                     <button pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-success mr-2"
-                        (click)="openNew()"></button>
-                    @if (products.length>3000) {
-                        <button pButton pRipple label="Desactivar" icon="pi pi-ban" class="p-button-secondary"
-                        (click)="disableSelectedProducts()" [disabled]="!selectedProducts || !selectedProducts.length"></button>
+                    (click)="openNew()"></button>
+
+                    @if (showOptDisabled) {
+                      <button pButton pRipple label="Desactivar" icon="pi pi-ban" class="p-button-secondary"
+                      (click)="disableSelectedProducts()" [disabled]="!selectedProducts || !selectedProducts.length"></button>
                     }
-                    
                 </ng-template>
-        
+
                 <ng-template pTemplate="right">
                     <button pButton pRipple label="Importar" icon="pi pi-download" class="p-button-primary mr-2"
                         (click)="openDialogImportExcel()"></button>
                     <button pButton pRipple label="Exportar" icon="pi pi-upload" class="p-button-help" (click)="exportProductsEnabled()"></button>
                 </ng-template>
             </p-toolbar>
-        
+
             <p-table #dt [value]="products" styleClass="p-datatable-sm" [rows]="sizePageEnabled" [paginator]="true"
             currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} datos."
             [showCurrentPageReport]="true"
-            [globalFilterFields]="[
-              'name',
-              'code',
-              'categoryProduct.name',
-              'measureUnit.name'
-            ]" 
             [tableStyle]="{ 'min-width': '75rem' }" [(selection)]="selectedProducts" [rowHover]="true"
                 dataKey="id" [scrollable]="true" scrollHeight="400px">
                 <ng-template pTemplate="caption">
                     <div class="flex align-items-center justify-content-between">
-                        <h5 class="m-0">Mantenimiento de Productos</h5>
-                        <span class="p-input-icon-left">
-                            <i class="pi pi-search"></i>
-                            <input class="p-inputtext" type="text" (input)="applyFilterGlobal($event, 'contains')"
-                                placeholder="Buscar..." />
-                        </span>
+                        <h3 class="m-1">Mantenimiento de Productos</h3>
                     </div>
                 </ng-template>
                 <ng-template pTemplate="header">
                     <tr>
-                        @if (products.length>3000) {
+                        @if (showOptDisabled) {
                             <th style="padding-left: 1rem; width: 4rem">
                                 <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                             </th>
                         }
                         <th style="min-width: 15rem">Codigo</th>
                         <th style="min-width: 15rem">Nombre</th>
-                        <th style="min-width: 10rem">Categoria</th>
+                        <th style="min-width: 15rem">Categoria</th>
                         <th style="min-width: 10rem">Unidad Medida</th>
                         <th style="min-width: 10rem">Price</th>
                         <th></th>
                     </tr>
+                    <tr>
+                      <th></th>
+                      <th>
+                        <p-columnFilter type="text" field="code"></p-columnFilter>
+                      </th>
+                      <th>
+                        <p-columnFilter type="text" field="name"></p-columnFilter>
+                      </th>
+                      <th>
+                        <p-columnFilter field="categoryProduct" matchMode="in" [showMenu]="false">
+                          <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                              <p-multiSelect [ngModel]="value" [options]="listCategoriesFilter" placeholder="Any" (onChange)="filter($event.value)" optionLabel="name">
+                                  <ng-template let-option pTemplate="item">
+                                      <div class="inline-block vertical-align-middle">
+                                          <span class="ml-1 mt-1">{{ option.name }}</span>
+                                      </div>
+                                  </ng-template>
+                              </p-multiSelect>
+                            </ng-template>
+                        </p-columnFilter>
+                      </th>
+                      <th>
+                        <p-columnFilter field="measureUnit" matchMode="in" [showMenu]="false">
+                          <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                              <p-multiSelect [ngModel]="value" [options]="listMeasureUnit" placeholder="Any" (onChange)="filter($event.value)" optionLabel="name">
+                                  <ng-template let-option pTemplate="item">
+                                      <div class="inline-block vertical-align-middle">
+                                          <span class="ml-1 mt-1">{{ option.name }}</span>
+                                      </div>
+                                  </ng-template>
+                              </p-multiSelect>
+                            </ng-template>
+                        </p-columnFilter>
+                      </th>
+                      <th></th>
+                      <th></th>
+                    </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-product>
                     <tr>
-                        <td style="padding: 5px; padding-left: 1rem;">
+                        @if (showOptDisabled) {
+                          <td style="padding: 5px; padding-left: 1rem;">
                             <p-tableCheckbox [value]="product"></p-tableCheckbox>
-                        </td>
+                          </td>
+                        }
                         <td style="padding: 5px;">{{ product.code }}</td>
                         <td style="padding: 5px;">{{ product.name }}</td>
                         <td style="padding: 5px;">{{ product.categoryProduct.name }}</td>
@@ -82,8 +110,11 @@
         <p-tabPanel header="Deshabilitados">
             <p-toolbar styleClass="mb-2 gap-2">
                 <ng-template pTemplate="left">
+                  @if (showOptEnabled){
                     <button pButton pRipple label="Activar" icon="pi pi-check-circle" class="p-button-success"
-                        (click)="enableSelectedProducts()" [disabled]="!selectedProductsDisable || !selectedProductsDisable.length"></button>
+                    (click)="enableSelectedProducts()" [disabled]="!selectedProductsDisable || !selectedProductsDisable.length"></button>
+                  }
+
                 </ng-template>
 
                 <ng-template pTemplate="right">
@@ -98,7 +129,7 @@
               'code',
               'categoryProduct',
               'measureUnit'
-            ]" 
+            ]"
             [tableStyle]="{ 'min-width': '75rem' }" [(selection)]="selectedProductsDisable" [rowHover]="true"
                 dataKey="id" [scrollable]="true" scrollHeight="400px">
                 <ng-template pTemplate="caption">
@@ -113,33 +144,37 @@
                 </ng-template>
                 <ng-template pTemplate="header">
                     <tr>
+                      @if (showOptEnabled){
                         <th style="width: 4rem">
-                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                         </th>
-                        <th style="min-width: 15rem">Codigo</th>
-                        <th style="min-width: 15rem">Nombre</th>
-                        <th style="min-width: 10rem">Categoria</th>
-                        <th style="min-width: 10rem">Unidad Medida</th>
-                        <th style="min-width: 10rem">Price</th>
-                        <th></th>
+                      }
+                      <th style="min-width: 15rem">Codigo</th>
+                      <th style="min-width: 15rem">Nombre</th>
+                      <th style="min-width: 10rem">Categoria</th>
+                      <th style="min-width: 10rem">Unidad Medida</th>
+                      <th style="min-width: 10rem">Price</th>
+                      <th></th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-productDisable>
                     <tr>
+                      @if (showOptEnabled){
                         <td style="padding: 5px; padding-left: 1rem;">
-                            <p-tableCheckbox [value]="productDisable"></p-tableCheckbox>
+                          <p-tableCheckbox [value]="productDisable"></p-tableCheckbox>
                         </td>
-                        <td style="padding: 5px;">{{ productDisable.code }}</td>
-                        <td style="padding: 5px;">{{ productDisable.name }}</td>
-                        <td style="padding: 5px;">{{ productDisable.categoryProduct.name }}</td>
-                        <td style="padding: 5px;">{{ productDisable.measureUnit.name }}</td>
-                        <td style="padding: 5px;">{{ productDisable.sellingPriceSoles | currency : "S/" }}</td>
-                        <td style="padding: 5px;">
-                            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2"
-                                (click)="editProduct(productDisable)"></button>
-                            <button pButton pRipple icon="pi pi-check-circle" class="p-button-rounded p-button-success"
-                                (click)="enableProduct(productDisable)"></button>
-                        </td>
+                      }
+                      <td style="padding: 5px;">{{ productDisable.code }}</td>
+                      <td style="padding: 5px;">{{ productDisable.name }}</td>
+                      <td style="padding: 5px;">{{ productDisable.categoryProduct.name }}</td>
+                      <td style="padding: 5px;">{{ productDisable.measureUnit.name }}</td>
+                      <td style="padding: 5px;">{{ productDisable.sellingPriceSoles | currency : "S/" }}</td>
+                      <td style="padding: 5px;">
+                          <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2"
+                              (click)="editProduct(productDisable)"></button>
+                          <button pButton pRipple icon="pi pi-check-circle" class="p-button-rounded p-button-success"
+                              (click)="enableProduct(productDisable)"></button>
+                      </td>
                     </tr>
                 </ng-template>
             </p-table>
@@ -148,7 +183,7 @@
             </div> -->
         </p-tabPanel>
     </p-tabView>
-    
+
 </div>
 <p-dialog [(visible)]="productDialog" [style]="{ width: '80vw', height: '750px' }" header="Nuevo Producto"
     [modal]="true" styleClass="p-fluid">
@@ -278,7 +313,7 @@
                         <div class="flex-auto">
                             <label class="block font-bold mb-2" for="locale-us">Stock Minimo</label>
                             <p-inputNumber [(ngModel)]="product.minimumStock" inputId="locale-us" mode="decimal" locale="en-US" [minFractionDigits]="0"> </p-inputNumber>
-                        </div>  
+                        </div>
                     </div>
                 </div>
             </p-tabPanel>
@@ -295,11 +330,11 @@
     <ng-template pTemplate="content">
         <div class="card flex justify-content-center">
             <p-fileUpload name="demo[]" url="https://www.primefaces.org/cdn/api/upload.php" (onUpload)="onUpload($event)" [multiple]="true" accept=".xlsx" [fileLimit]="1" [maxFileSize]="1000000">
-                
+
             </p-fileUpload>
         </div>
     </ng-template>
-    
+
     <ng-template pTemplate="footer">
         <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
     </ng-template>
